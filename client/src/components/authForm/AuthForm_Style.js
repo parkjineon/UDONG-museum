@@ -35,7 +35,7 @@ export const Input = styled.input`
 export const FormInput = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
+  margin-top: 70px;
 `;
 export const Separator = styled.div`
   width: 250px;
@@ -50,7 +50,7 @@ export const FormTitle = styled.div`
 export const AuthForm = styled.div`
   height: 600px;
   width: 400px;
-  margin-top: 100px;
+  margin-top: 30px;
   padding-top: 50px;
   background-color: white;
   border-radius: 10px;
@@ -58,13 +58,10 @@ export const AuthForm = styled.div`
   flex-direction: column;
   align-items: center;
   border: 2px solid black;
-  /* box-shadow: 0px 0px 30px #777777; */
 `;
 export const AuthPageContainer = styled.div`
-  background-color: ${(props) => props.theme.colors.main};
-  /* padding: 70px 0px; */
+  /* background-color: ${(props) => props.theme.colors.main};
   height: 100%;
   display: flex;
-  /* align-items: center; */
-  justify-content: center;
+  justify-content: center; */
 `;

@@ -9,6 +9,8 @@ const GlobalStyle = createGlobalStyle`
 }
     html, body, #root {
         height:100%;
+        background-color:${(props) => props.theme.colors.main} ;
+        
     }
     body {
         /* margin:0px 120px; */

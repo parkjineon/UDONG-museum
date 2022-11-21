@@ -9,12 +9,21 @@ const NavBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
+  /* width: 80px; */
+  padding: 0px 10px;
   height: 35px;
   border: 1px solid white;
   border-radius: 7px;
   margin-right: 10px;
   color: white;
+`;
+const LoginBtn = styled(NavBtn)`
+  border: none;
+  background-color: #3dcd59;
+`;
+const SignupBtn = styled(NavBtn)`
+  border: none;
+  background-color: #3dcdac;
 `;
 const StyledNavLink = styled(Link)`
   text-decoration: none;
@@ -55,17 +64,21 @@ function Nav() {
   return (
     <NavContainer>
       <NavContent>
-        <LeftNav></LeftNav>
+        <LeftNav>
+          <StyledNavLink to="/">
+            <NavBtn>LOGO</NavBtn>
+          </StyledNavLink>
+        </LeftNav>
         <RightNav>
           {isLoggedIn ? (
             <button onClick={onLogoutClick}>Logout</button>
           ) : (
             <>
               <StyledNavLink to="/login">
-                <NavBtn>로그인</NavBtn>
+                <LoginBtn>로그인</LoginBtn>
               </StyledNavLink>
               <StyledNavLink to="/register">
-                <NavBtn>회원가입</NavBtn>
+                <SignupBtn>회원가입</SignupBtn>
               </StyledNavLink>
             </>
           )}
