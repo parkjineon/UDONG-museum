@@ -11,37 +11,47 @@ function getCurrentDate(){
     return new Date(Date.UTC(year, month, today));
 }
 
-const PhotoSchema = mongoose.Schema({
+const ExhibitionSchema = mongoose.Schema({
+    name: {
+        type: String
+    },
     user: {
         type: String
     },
-    date: {
+    startDate: {
         type: Date,
         default: getCurrentDate()
+    },
+    endDate: {
+        type: Date,
+        default: getCurrentDate()
+    },
+    region:{
+        type: String
     },
     description:{
         type: String
     },
-    src:{
-        type: String
-    },
-    exhibition:{
-        type: String
+    photos: {
+        type: Array
     },
     used: {
         type: Boolean
+    },
+    thumbnail: {
+        type: String
     }
 })
 
-PhotoSchema.statics.findByToken = function(token, cb){
-    var Photo = this
+ExhibitionSchema.statics.findByToken = function(token, cb){
+    var Exhibition = this
     jwt.verify(token,secretToken,function(err, decoded){
-        Photo.find({"user": decoded}, function(err,Photos){
+        Exhibition.find({"user": decoded}, function(err,Exhibitions){
             if(err) return cb(err);
-            cb(null,Photos)
+            cb(null,Exhibitions)
         })
     })  
 }
 
-const Photo = mongoose.model('Photo', PhotoSchema);
-module.exports = { Photo }
+const Exhibition = mongoose.model('Exhibition', ExhibitionSchema);
+module.exports = { Exhibition }

@@ -10,7 +10,8 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(cookieParser());
 app.use('/api/users', require('./routes/users'));
-
+app.use('/api/photos',require('./routes/photos'));
+app.use('/api/exhibitions', require('./routes/exhibitions'));
 
 mongoose.connect(config.mongoURI,{
 	useNewUrlParser: true, useUnifiedTopology: true
