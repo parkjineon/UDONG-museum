@@ -2,10 +2,16 @@ const express = require('express')
 const app = express()
 const port = 5000
 const mongoose = require('mongoose');
-const config = require('./config/key')
+const config = require('./config/key');
+const cookieParser = require('cookie-parser');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.use(cookieParser());
+app.use('/api/users', require('./routes/users'));
+app.use('/api/photos',require('./routes/photos'));
+app.use('/api/exhibitions', require('./routes/exhibitions'));
 
 mongoose.connect(config.mongoURI,{
 	useNewUrlParser: true, useUnifiedTopology: true
@@ -13,4 +19,8 @@ mongoose.connect(config.mongoURI,{
     console.log('...mongoDB connected successfully')
 }).catch(err => {
     console.log(err)
+})
+
+app.listen(port, () => {
+    console.log('nice to meet you!')
 })
