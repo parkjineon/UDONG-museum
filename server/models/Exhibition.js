@@ -26,8 +26,11 @@ const ExhibitionSchema = mongoose.Schema({
         type: Date,
         default: getCurrentDate()
     },
-    region:{
-        type: String
+    latitude:{
+        type: Number
+    },
+    longitude:{
+        type: Number
     },
     description:{
         type: String
