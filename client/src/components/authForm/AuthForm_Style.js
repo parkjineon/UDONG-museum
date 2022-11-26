@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const FormLink = styled(Link)`
   text-decoration: none;
-  color: ${(props) => props.theme.colors.main};
+  color: ${(props) => props.theme.colors.point};
   margin-left: 5px;
 `;
 export const FormLinkDescription = styled.div`
@@ -15,7 +15,7 @@ export const FormLinkContainer = styled.div`
   margin-top: 10px;
 `;
 export const FormBtn = styled.button`
-  background-color: ${(props) => props.theme.colors.main};
+  background-color: ${(props) => props.theme.colors.point};
   border: none;
   color: white;
   width: 250px;

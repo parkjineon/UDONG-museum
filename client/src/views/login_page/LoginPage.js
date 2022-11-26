@@ -30,7 +30,6 @@ function LoginPage() {
     login(data, {
       onSuccess: (res) => {
         if (res.data.loginSuccess) {
-          // 로그인 성공 > store에 로그인 정보 저장
           dispatch(userActions.login());
           navigate("/");
         } else {
@@ -80,12 +79,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
-// const onSubmit = (e) => {
-//   e.preventDefault();
-//   let body = {
-//     email,
-//     password,
-//   };
-//
-// };

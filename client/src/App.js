@@ -13,6 +13,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import PublicRoute from "./hoc/PublicRoute";
 import Me from "./hoc/Me";
+import ProfilePage from "./views/profile_page/ProfilePage";
+import EditProfilePage from "./views/edit_profile_page/EditProfilePage";
 
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
@@ -60,6 +62,8 @@ function App() {
                       </PublicRoute>
                     }
                   />
+                  <Route path="/profile/:uid" element={<ProfilePage />} />
+                  <Route path="/profile/edit" element={<EditProfilePage />} />
                 </Routes>
               </PageContainer>
             </Router>

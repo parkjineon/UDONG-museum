@@ -52,7 +52,19 @@ const FOLLOW = async (uid) => {};
 const UNFOLLOW = async (uid) => {};
 const GET_ME = async () => {
   try {
-    const response = axios.get("api/users/mine/show");
+    const response = axios.get("/api/users/mine/show");
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
+const GET_USER = async (uid) => {
+  try {
+    const response = axios.get(`/api/users/${uid}`);
     return response;
   } catch (err) {
     console.log(err);
@@ -63,13 +75,4 @@ const GET_ME = async () => {
   }
 };
 
-export {
-  LOGIN,
-  LOGOUT,
-  REGISTER,
-  AUTH,
-  FOLLOW,
-  UNFOLLOW,
-  GET_ME,
-  // GET_USER,
-};
+export { LOGIN, LOGOUT, REGISTER, AUTH, FOLLOW, UNFOLLOW, GET_ME, GET_USER };
