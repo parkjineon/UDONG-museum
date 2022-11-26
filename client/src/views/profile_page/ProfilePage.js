@@ -1,27 +1,55 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { GET_USER } from "../../api/userAPI";
+import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
+import { userActions } from "../../store/userSlice";
 
 function ProfilePage() {
   const [isFollowing, setIsFollowing] = useState(false);
+  const dispatch = useDispatch();
   const { uid } = useParams();
   let me = useSelector((state) => state.user.user);
   const isMe = me._id === uid;
+  const { data } = useQuery(["get_me", uid], GET_ME, {
+    staleTime: Infinity,
+    onSuccess: (data) => {
+      dispatch(userActions.me(data.data));
+    },
+  });
   const { data: user } = useQuery(["getUser", uid], () => GET_USER(uid), {
     staleTime: Infinity,
     onSuccess: (user) => {
       console.log(user);
     },
   });
-  useEffect(() => {
-    if (me?.following.includes(uid)) {
-      setIsFollowing(true);
+  const { mutate: follow } = useMutation(FOLLOW);
+  const { mutate: unfollow } = useMutation(UNFOLLOW);
+
+  const toggleFollow = () => {
+    if (isFollowing) {
+      unfollow(uid, {
+        onSuccess: (res) => {
+          console.log(res);
+          if (res.data.unfollowUserSuccess) {
+            console.log("unfollow");
+            setIsFollowing(false);
+          }
+        },
+      });
+    } else {
+      follow(uid, {
+        onSuccess: (res) => {
+          console.log(res.data);
+          if (res.data.followUserSuccess) {
+            console.log("follow");
+            setIsFollowing(true);
+          }
+        },
+      });
     }
-  });
-  const toggleFollow = () => {};
+  };
 
   return (
     <ProfilePageContainer>

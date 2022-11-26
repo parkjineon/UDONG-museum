@@ -62,7 +62,14 @@ function App() {
                       </PublicRoute>
                     }
                   />
-                  <Route path="/profile/:uid" element={<ProfilePage />} />
+                  <Route
+                    path="/profile/:uid"
+                    element={
+                      <Me>
+                        <ProfilePage />
+                      </Me>
+                    }
+                  />
                   <Route path="/profile/edit" element={<EditProfilePage />} />
                 </Routes>
               </PageContainer>

@@ -48,8 +48,30 @@ const AUTH = async () => {
     };
   }
 };
-const FOLLOW = async (uid) => {};
-const UNFOLLOW = async (uid) => {};
+const FOLLOW = async (uid) => {
+  try {
+    const response = axios.post(`/api/users/${uid}/unfollow`);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
+const UNFOLLOW = async (uid) => {
+  try {
+    const response = axios.post(`/api/users/${uid}/unfollow`);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 const GET_ME = async () => {
   try {
     const response = axios.get("/api/users/mine/show");
