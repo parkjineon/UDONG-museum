@@ -6,7 +6,7 @@ const { auth } = require('../middleware/auth');
 //사진 등록
 router.post('/register', auth, (req,res)=>{
     const photo = new Photo(req.body)
-    photo.user = req.user.email
+    photo.user = req.user._id
 
     photo.save((err,photo)=>{
         if(err)
@@ -20,11 +20,8 @@ router.post('/register', auth, (req,res)=>{
 })
 
 //유저 사진 리스트업
-router.get('/listUp',(req,res)=>{
-    if(req.cookies.x_auth===undefined){ 
-        return res.status(200).json({listUpPhotoSuccess:true, photos: []})
-    }
-    Photo.findByToken(req.cookies.x_auth, (err,photos)=>{
+router.get('/:userId/listUp',(req,res)=>{
+    Photo.find({user : req.params.userId}, (err,photos)=>{
         if(err){
             console.log('list up photo error')
             return res.status(400).send(err);
