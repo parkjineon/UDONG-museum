@@ -2,8 +2,18 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import FormError from "../../components/authForm/FormError";
 import * as S from "../../components/authForm/AuthForm_Style";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { GET_ME, LOGIN } from "../../api/userAPI";
+import { userActions } from "../../store/userSlice";
+import { useEffect } from "react";
 
 function LoginPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { mutate: login } = useMutation(LOGIN);
+
   const {
     register,
     handleSubmit,
@@ -17,7 +27,17 @@ function LoginPage() {
       email,
       password,
     };
-    console.log(data);
+    login(data, {
+      onSuccess: (res) => {
+        if (res.data.loginSuccess) {
+          // 로그인 성공 > store에 로그인 정보 저장
+          dispatch(userActions.login());
+          navigate("/");
+        } else {
+          console.log(res.message);
+        }
+      },
+    });
   };
 
   return (
@@ -67,17 +87,5 @@ export default LoginPage;
 //     email,
 //     password,
 //   };
-//   login(body, {
-//     onSuccess: (res) => {
-//       console.log(res);
-//       // if (res.loginSuccess) {
-//       if (res.data) {
-//         // 로그인 성공 > store에 로그인 정보 저장
-//         dispatch(userActions.login());
-//         navigate("/");
-//       } else {
-//         console.log(res.message);
-//       }
-//     },
-//   });
+//
 // };

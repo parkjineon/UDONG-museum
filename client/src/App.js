@@ -9,33 +9,62 @@ import rootReducer from "./store/index";
 import store from "./store/index";
 import RegisterPage from "./views/register_page/RegisterPage";
 import styled from "styled-components";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import PublicRoute from "./hoc/PublicRoute";
+import Me from "./hoc/Me";
 
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
   /* padding-top: 70px; */
-  padding: 70px 120px 0px;
+  padding: 0px 120px 0px;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
 `;
+
+export let persistor = persistStore(store);
 const queryClient = new QueryClient();
 function App() {
   return (
     <>
       <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <Router>
-            <Nav />
-            <PageContainer>
-              <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-              </Routes>
-            </PageContainer>
-          </Router>
-        </QueryClientProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <QueryClientProvider client={queryClient}>
+            <Router>
+              <Nav />
+              <PageContainer>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <Me>
+                        <MainPage />
+                      </Me>
+                    }
+                  />
+                  <Route
+                    path="/login"
+                    element={
+                      <PublicRoute>
+                        <LoginPage />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/register"
+                    element={
+                      <PublicRoute>
+                        <RegisterPage />
+                      </PublicRoute>
+                    }
+                  />
+                </Routes>
+              </PageContainer>
+            </Router>
+          </QueryClientProvider>
+        </PersistGate>
       </Provider>
     </>
   );
