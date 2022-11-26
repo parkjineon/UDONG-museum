@@ -115,67 +115,67 @@ router.get("/:userId/follow", auth, (req, res) => {
       return res.status(400).send(err);
     }
 
-    User.updateOne(
-      { _id: req.user._id },
-      { $addToSet: { following: info.email } },
-      (err) => {
-        if (err) {
-          return res.status(400).send(err);
+//유저 팔로우
+router.get('/:userId/follow', auth, (req,res)=>{
+    User.findOne({ _id : req.params.userId},(err, info)=>{
+        if(err){
+            return res.status(400).send(err);
         }
-        return res.status(200).json({
-          followUserSuccess: true,
-        });
-      }
-    );
-  });
-});
+        
+        User.updateOne({ _id : req.user._id},{ $addToSet: { following: info.email } },(err)=>{
+            if(err){
+                return res.status(400).send(err);
+            }
+            return res.status(200).json({
+                followUserSuccess:true
+            })
+        })
+    })
+})
 
 //유저 언팔로우
-router.get("/:userId/unfollow", auth, (req, res) => {
-  User.findOne({ _id: req.params.userId }, (err, info) => {
-    if (err) {
-      return res.status(400).send(err);
-    }
-
-    User.updateOne(
-      { _id: req.user._id },
-      { $pull: { following: info.email } },
-      (err) => {
-        if (err) {
-          return res.status(400).send(err);
+router.get('/:userId/unfollow', auth, (req,res)=>{
+    User.findOne({_id : req.params.userId},(err, info)=>{
+        if(err){
+            return res.status(400).send(err);
         }
-        return res.status(200).json({
-          unfollowUserSuccess: true,
-        });
-      }
-    );
-  });
-});
+        
+        User.updateOne({ _id : req.user._id},{ $pull: { following: info.email } },(err)=>{
+            if(err){
+                return res.status(400).send(err);
+            }
+            return res.status(200).json({
+                unfollowUserSuccess:true
+            })
+        })
+    })
+})
 
 //내 정보 가져오기
-router.get("/mine/show", auth, (req, res) => {
-  res.status(200).json({
-    _id: req.user._id,
-    email: req.user.email,
-    name: req.user.name,
-    role: req.user.role,
-    image: req.user.image,
-    location: req.user.location,
-    description: req.user.description,
-    following: req.user.following,
-  });
-});
+router.get('/mine/show',auth,(req,res)=>{
+    res.status(200).json({
+        _id: req.user._id,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+        image: req.user.image,
+        location: req.user.location,
+        description: req.user.description,
+        following: req.user.following
+    })
+})
 
 //내 정보 수정하기
-router.post("/mine/edit", auth, (req, res) => {
-  User.findOneAndUpdate({ _id: req.user._id }, req.body, (err) => {
-    if (err) {
-      return res.status(400).send(err);
-    }
-    return res.status(200).json({
-      editEditMyInfoSuccess: true,
-    });
-  });
-});
+router.post('/mine/edit',auth,(req,res)=>{
+    User.findOneAndUpdate({ _id : req.user._id},req.body,(err)=>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        return res.status(200).json({
+            editEditMyInfoSuccess:true
+        })
+    })
+})
+
 
 module.exports = router;
