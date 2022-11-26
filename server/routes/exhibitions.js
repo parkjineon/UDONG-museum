@@ -7,9 +7,6 @@ const { auth } = require("../middleware/auth");
 router.post("/register", auth, (req, res) => {
   const exhibition = new Exhibition(req.body);
   exhibition.user = req.user._id;
-router.post('/register', auth, (req,res)=>{
-    const exhibition = new Exhibition(req.body)
-    exhibition.user = req.user._id
 
   exhibition.save((err, exhibition) => {
     if (err) return res.status(400).send(err);
@@ -54,32 +51,6 @@ router.post("/near", (req, res) => {
     }
   );
 });
-router.get('/:userId/listUp',(req,res)=>{
-    Exhibition.find({user : req.params.userId}, (err,exhibitions)=>{
-        if(err){
-            console.log('list up exhibition error')
-            return res.status(400).send(err);
-        }
-        return res.status(200).json({
-            listUpExhibitionSuccess: true,
-            exhibitions: exhibitions
-        })
-    });
-
-})
-
-//유저 전시회 리스트업
-router.post('/near',(req,res)=>{
-    Exhibition.find({latitude : {$gte:req.body.minLatitude, $lte: req.body.maxLatitude}, longitude: {$gte:req.body.minLongitude, $lte: req.body.maxLongitude}}, (err,exhibitions)=>{
-        if(err){
-            console.log('list up exhibition error')
-            return res.status(400).send(err);
-        }
-        return res.status(200).json({
-            listUpExhibitionSuccess: true,
-            exhibitions: exhibitions
-        })
-    });
 
 //전시회 상세 정보
 router.get("/:exhibitionId", (req, res) => {
