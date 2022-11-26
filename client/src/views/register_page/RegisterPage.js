@@ -2,8 +2,16 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import FormError from "../../components/authForm/FormError";
 import * as S from "../../components/authForm/AuthForm_Style";
+import { useMutation } from "react-query";
+import { REGISTER } from "../../api/userAPI";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function RegisterPage() {
+  const { mutate: signup } = useMutation(REGISTER);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,6 +28,16 @@ function RegisterPage() {
       name,
     };
     console.log(data);
+    signup(data, {
+      onSuccess: (res) => {
+        console.log(res);
+        if (res.data.registerSuccess) {
+          navigate("/login");
+        } else {
+          console.log(res.message);
+        }
+      },
+    });
   };
   const checkPassword = (pw) => {
     if (crntPassword !== pw) {

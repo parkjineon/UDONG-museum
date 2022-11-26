@@ -2,7 +2,7 @@ import axios from "axios";
 
 const LOGIN = async (body) => {
   try {
-    const response = await axios.post("/api/login", body);
+    const response = await axios.post("/api/users/login", body);
     return response;
   } catch (err) {
     console.log(err);
@@ -14,7 +14,7 @@ const LOGIN = async (body) => {
 };
 const LOGOUT = async () => {
   try {
-    const response = await axios.get("http://localhost:3001/logout");
+    const response = await axios.get("/api/users/logout");
     return response;
   } catch (err) {
     console.log(err);
@@ -26,7 +26,7 @@ const LOGOUT = async () => {
 };
 const REGISTER = async (body) => {
   try {
-    const response = await axios.post("http://localhost:3001/register", body);
+    const response = await axios.post("/api/users/register", body);
     return response;
   } catch (err) {
     console.log(err);
@@ -50,9 +50,18 @@ const AUTH = async () => {
 };
 const FOLLOW = async (uid) => {};
 const UNFOLLOW = async (uid) => {};
-const GET_USER = async (uid) => {};
-// const getMyself
-const GET_CRNT_LOCATION = async () => {};
+const GET_ME = async () => {
+  try {
+    const response = axios.get("api/users/mine/show");
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 
 export {
   LOGIN,
@@ -61,6 +70,6 @@ export {
   AUTH,
   FOLLOW,
   UNFOLLOW,
-  GET_USER,
-  GET_CRNT_LOCATION,
+  GET_ME,
+  // GET_USER,
 };

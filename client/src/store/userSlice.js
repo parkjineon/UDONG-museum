@@ -10,17 +10,17 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      const { accessToken, user } = action.payload;
-      state.isAuthenticated = true;
-      localStorage.setItem("token", accessToken);
-      state.token = accessToken;
-      state.user = user;
+      state.isLoggedIn = true;
     },
     logout: (state, action) => {
-      state.isAuthenticated = false;
-      localStorage.removeItem("token");
-      state.token = "";
+      state.isLoggedIn = false;
       state.user = {};
+    },
+    me: (state, action) => {
+      state.user = action.payload;
+    },
+    setLocation: (state, action) => {
+      state.location = action.payload;
     },
   },
 });
