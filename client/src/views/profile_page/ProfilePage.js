@@ -94,8 +94,8 @@ const ProfileImg = styled.div`
   width: 200px;
   height: 200px;
   border-radius: 100px;
-  /* border: 1px solid ${(props) => props.theme.colors.point}; */
-  background-color: ${(props) => props.theme.colors.point};
+  border: 2px solid ${(props) => props.theme.colors.point};
+  /* background-color: ${(props) => props.theme.colors.point}; */
 `;
 const UserInfo = styled.div`
   display: flex;
@@ -138,9 +138,9 @@ const EditProfileBtn = styled(ProfileBtn)`
 const BannerContainer = styled.div`
   width: 100%;
   height: 150px;
-  /* border: 1px solid ${(props) => props.theme.colors.point}; */
+  border: 2px solid ${(props) => props.theme.colors.point};
   margin-top: 40px;
   border-radius: 20px;
-  background-color: ${(props) => props.theme.colors.point};
+  /* background-color: ${(props) => props.theme.colors.point}; */
 `;
 const FeedContainer = styled.div``;

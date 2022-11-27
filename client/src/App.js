@@ -15,6 +15,7 @@ import PublicRoute from "./hoc/PublicRoute";
 import Me from "./hoc/Me";
 import ProfilePage from "./views/profile_page/ProfilePage";
 import EditProfilePage from "./views/edit_profile_page/EditProfilePage";
+import PrivateRoute from "./hoc/PrivateRoute";
 
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
@@ -66,11 +67,22 @@ function App() {
                     path="/profile/:uid"
                     element={
                       <Me>
-                        <ProfilePage />
+                        <PrivateRoute>
+                          <ProfilePage />
+                        </PrivateRoute>
                       </Me>
                     }
                   />
-                  <Route path="/profile/edit" element={<EditProfilePage />} />
+                  <Route
+                    path="/profile/edit"
+                    element={
+                      <Me>
+                        <PrivateRoute>
+                          <EditProfilePage />
+                        </PrivateRoute>
+                      </Me>
+                    }
+                  />
                 </Routes>
               </PageContainer>
             </Router>

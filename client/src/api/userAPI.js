@@ -97,4 +97,27 @@ const GET_USER = async (uid) => {
   }
 };
 
-export { LOGIN, LOGOUT, REGISTER, AUTH, FOLLOW, UNFOLLOW, GET_ME, GET_USER };
+const EDIT_PROFILE = async () => {
+  try {
+    const response = axios.post("/api/users/mine/edit");
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
+
+export {
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+  AUTH,
+  FOLLOW,
+  UNFOLLOW,
+  GET_ME,
+  GET_USER,
+  EDIT_PROFILE,
+};
