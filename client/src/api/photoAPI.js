@@ -1,6 +1,17 @@
 import axios from "axios";
 
-const UPLOAD_PHOTO = () => {};
+const UPLOAD_PHOTO = async (data) => {
+  try {
+    const response = await axios.post("/api/photos/register", data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 const EDIT_PHOTO = () => {};
 const GET_PHOTO = () => {};
 const DELETE_PHOTO = () => {};

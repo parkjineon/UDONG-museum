@@ -17,6 +17,7 @@ import ProfilePage from "./views/profile_page/ProfilePage";
 import EditProfilePage from "./views/edit_profile_page/EditProfilePage";
 import PrivateRoute from "./hoc/PrivateRoute";
 import UploadPhotoPage from "./views/upload_photo_page/UploadPhotoPage";
+import OpenExhibitionPage from "./views/open_exhibition_page/OpenExhibitionPage";
 
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
@@ -89,6 +90,14 @@ function App() {
                     element={
                       <PrivateRoute>
                         <UploadPhotoPage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/exhibition/open"
+                    element={
+                      <PrivateRoute>
+                        <OpenExhibitionPage />
                       </PrivateRoute>
                     }
                   />

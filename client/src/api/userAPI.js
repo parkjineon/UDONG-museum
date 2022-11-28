@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const LOGIN = async (body) => {
+const LOGIN = async (data) => {
   try {
-    const response = await axios.post("/api/users/login", body);
+    const response = await axios.post("/api/users/login", data);
     return response;
   } catch (err) {
     console.log(err);
@@ -24,9 +24,9 @@ const LOGOUT = async () => {
     };
   }
 };
-const REGISTER = async (body) => {
+const REGISTER = async (data) => {
   try {
-    const response = await axios.post("/api/users/register", body);
+    const response = await axios.post("/api/users/register", data);
     return response;
   } catch (err) {
     console.log(err);

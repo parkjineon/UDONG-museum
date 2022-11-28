@@ -89,6 +89,9 @@ function ProfilePage() {
                 <Link to="/profile/edit">
                   <EditProfileBtn>프로필 수정</EditProfileBtn>
                 </Link>
+                <Link to="/exhibition/open">
+                  <EditProfileBtn>전시회 열기</EditProfileBtn>
+                </Link>
               </>
             ) : (
               // <FollowBtn
