@@ -22,6 +22,9 @@ export const FormBtn = styled.button`
   height: 40px;
   border-radius: 5px;
   margin-top: 13px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 export const Input = styled.input`
   width: 250px;

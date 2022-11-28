@@ -50,7 +50,7 @@ const AUTH = async () => {
 };
 const FOLLOW = async (uid) => {
   try {
-    const response = axios.post(`/api/users/${uid}/unfollow`);
+    const response = axios.post(`/api/users/${uid}/follow`);
     return response;
   } catch (err) {
     console.log(err);

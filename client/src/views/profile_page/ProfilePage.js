@@ -15,19 +15,13 @@ const default_user = {
   following: [],
 };
 function ProfilePage() {
-  const dispatch = useDispatch();
   const [isFollowing, setIsFollowing] = useState(false);
   const [user, setUser] = useState(default_user);
   const [photos, setPhotos] = useState([]);
   const { uid } = useParams();
   let me = useSelector((state) => state.user.user);
   const isMe = me._id === uid;
-  // const { data } = useQuery(["get_me", uid], GET_ME, {
-  //   staleTime: Infinity,
-  //   onSuccess: (data) => {
-  //     dispatch(userActions.me(data.data));
-  //   },
-  // });
+
   const { data: get_user_data } = useQuery(
     ["get_user", uid],
     () => GET_USER(uid),
@@ -39,6 +33,14 @@ function ProfilePage() {
       },
     }
   );
+  const { data } = useQuery(["get_me", uid], GET_ME, {
+    staleTime: Infinity,
+    onSuccess: (data) => {
+      if (data.data.following.includes(user.email)) {
+        setIsFollowing(true);
+      }
+    },
+  });
   const { data: photo_listup_data } = useQuery(
     ["photo_listup", uid],
     () => PHOTO_LISTUP(uid),
@@ -57,9 +59,7 @@ function ProfilePage() {
     if (isFollowing) {
       unfollow(uid, {
         onSuccess: (res) => {
-          console.log(res);
           if (res.data.unfollowUserSuccess) {
-            console.log("unfollow");
             setIsFollowing(false);
           }
         },
@@ -67,9 +67,7 @@ function ProfilePage() {
     } else {
       follow(uid, {
         onSuccess: (res) => {
-          console.log(res.data);
           if (res.data.followUserSuccess) {
-            console.log("follow");
             setIsFollowing(true);
           }
         },
