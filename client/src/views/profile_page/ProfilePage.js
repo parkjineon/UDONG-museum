@@ -3,27 +3,53 @@ import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
 import { userActions } from "../../store/userSlice";
+import Photo from "./components/Photo";
 
+const default_user = {
+  name: "",
+  description: "",
+  location: "",
+  following: [],
+};
 function ProfilePage() {
-  const [isFollowing, setIsFollowing] = useState(false);
   const dispatch = useDispatch();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [user, setUser] = useState(default_user);
+  const [photos, setPhotos] = useState([]);
   const { uid } = useParams();
   let me = useSelector((state) => state.user.user);
   const isMe = me._id === uid;
-  const { data } = useQuery(["get_me", uid], GET_ME, {
-    staleTime: Infinity,
-    onSuccess: (data) => {
-      dispatch(userActions.me(data.data));
-    },
-  });
-  const { data: user } = useQuery(["getUser", uid], () => GET_USER(uid), {
-    staleTime: Infinity,
-    onSuccess: (user) => {
-      console.log(user);
-    },
-  });
+  // const { data } = useQuery(["get_me", uid], GET_ME, {
+  //   staleTime: Infinity,
+  //   onSuccess: (data) => {
+  //     dispatch(userActions.me(data.data));
+  //   },
+  // });
+  const { data: get_user_data } = useQuery(
+    ["get_user", uid],
+    () => GET_USER(uid),
+    {
+      onSuccess: (get_user_data) => {
+        if (get_user_data.data.getUserInfoSuccess) {
+          setUser(get_user_data.data);
+        }
+      },
+    }
+  );
+  const { data: photo_listup_data } = useQuery(
+    ["photo_listup", uid],
+    () => PHOTO_LISTUP(uid),
+    {
+      onSuccess: (photo_listup_data) => {
+        if (photo_listup_data.data.listUpPhotoSuccess) {
+          setPhotos(photo_listup_data.data.photos);
+        }
+      },
+    }
+  );
   const { mutate: follow } = useMutation(FOLLOW);
   const { mutate: unfollow } = useMutation(UNFOLLOW);
 
@@ -56,13 +82,13 @@ function ProfilePage() {
       <HeaderContainer>
         <ProfileImg></ProfileImg>
         <UserInfo>
-          <Name>{user?.data?.name}</Name>
-          <Description>{user?.data?.description}</Description>
-          <Location>{user?.data?.location}</Location>
+          <Name>{user?.name}</Name>
+          <Description>{user?.description}</Description>
+          <Location>{user?.location}</Location>
           <ProfileBtnContainer>
             {isMe ? (
               <>
-                <FollowBtn>팔로워 {user?.data?.following.length}명</FollowBtn>
+                <FollowBtn>팔로워 {user?.following.length}명</FollowBtn>
                 <Link to="/profile/edit">
                   <EditProfileBtn>프로필 수정</EditProfileBtn>
                 </Link>
@@ -76,14 +102,18 @@ function ProfilePage() {
         </UserInfo>
       </HeaderContainer>
       <BannerContainer></BannerContainer>
-      <FeedContainer></FeedContainer>
+      <FeedContainer>
+        {photos.map((photo, index) => (
+          <Photo photo={photo} key={index} />
+        ))}
+      </FeedContainer>
     </ProfilePageContainer>
   );
 }
 export default ProfilePage;
 
 const ProfilePageContainer = styled.div`
-  width: 80%;
+  width: 1000px;
 `;
 const HeaderContainer = styled.div`
   display: flex;
@@ -143,4 +173,10 @@ const BannerContainer = styled.div`
   border-radius: 20px;
   /* background-color: ${(props) => props.theme.colors.point}; */
 `;
-const FeedContainer = styled.div``;
+const FeedContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  justify-content: space-between;
+`;

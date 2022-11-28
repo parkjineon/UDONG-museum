@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import styled from "styled-components";
 import FormError from "../../components/authForm/FormError";
 import * as S from "../../components/authForm/AuthForm_Style";
 import { useDispatch, useSelector } from "react-redux";

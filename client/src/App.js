@@ -20,8 +20,8 @@ import PrivateRoute from "./hoc/PrivateRoute";
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
   /* padding-top: 70px; */
-  padding: 0px 120px 0px;
-  width: 100%;
+  /* padding: 0px 120px 0px; */
+  width: 1200px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -31,12 +31,12 @@ export let persistor = persistStore(store);
 const queryClient = new QueryClient();
 function App() {
   return (
-    <>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <QueryClientProvider client={queryClient}>
-            <Router>
-              <Nav />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <Router>
+            <Nav />
+            <div style={{ display: "flex", justifyContent: "center" }}>
               <PageContainer>
                 <Routes>
                   <Route
@@ -85,11 +85,11 @@ function App() {
                   />
                 </Routes>
               </PageContainer>
-            </Router>
-          </QueryClientProvider>
-        </PersistGate>
-      </Provider>
-    </>
+            </div>
+          </Router>
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 }
 

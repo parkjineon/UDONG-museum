@@ -164,6 +164,9 @@ const Button = styled.button`
   font-weight: bold;
   border: none;
   margin: 0px 10px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const EditFormBtn = styled(Button)`
   background-color: #2bb239;
@@ -236,6 +239,7 @@ const ProfileImg = styled.div`
     ${Cover} {
       display: block;
     }
+    cursor: pointer;
   }
 `;
 const ProfileFormContainer = styled.div`
