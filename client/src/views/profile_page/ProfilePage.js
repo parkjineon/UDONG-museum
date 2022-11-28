@@ -7,6 +7,7 @@ import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
 import { userActions } from "../../store/userSlice";
 import Photo from "./components/Photo";
+import UploadBtn from "./components/UploadBtn";
 
 const default_user = {
   name: "",
@@ -54,7 +55,6 @@ function ProfilePage() {
   );
   const { mutate: follow } = useMutation(FOLLOW);
   const { mutate: unfollow } = useMutation(UNFOLLOW);
-
   const toggleFollow = () => {
     if (isFollowing) {
       unfollow(uid, {
@@ -74,7 +74,6 @@ function ProfilePage() {
       });
     }
   };
-
   return (
     <ProfilePageContainer>
       <HeaderContainer>
@@ -86,12 +85,17 @@ function ProfilePage() {
           <ProfileBtnContainer>
             {isMe ? (
               <>
-                <FollowBtn>팔로워 {user?.following.length}명</FollowBtn>
+                <FollowBtn>팔로잉 {user?.following.length}명</FollowBtn>
                 <Link to="/profile/edit">
                   <EditProfileBtn>프로필 수정</EditProfileBtn>
                 </Link>
               </>
             ) : (
+              // <FollowBtn
+              //   uid={uid}
+              //   isFollowing={isFollowing}
+              //   setIsFollowing={setIsFollowing}
+              // />
               <FollowBtn onClick={toggleFollow}>
                 {isFollowing ? "unfollow" : "follow"}
               </FollowBtn>
@@ -105,6 +109,7 @@ function ProfilePage() {
           <Photo photo={photo} key={index} />
         ))}
       </FeedContainer>
+      {isMe && <UploadBtn />}
     </ProfilePageContainer>
   );
 }

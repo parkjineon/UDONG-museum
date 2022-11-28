@@ -55,7 +55,7 @@ function EditProfilePage() {
 
         <EditForm onSubmit={handleSubmit(onFormSubmit)}>
           <InputContainer>
-            <Label>이메일</Label>
+            <Label>아이디</Label>
             <Input defaultValue={user?.email} readOnly />
           </InputContainer>
           <InputContainer>
