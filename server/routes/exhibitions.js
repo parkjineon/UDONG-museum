@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const { Exhibition } = require('../models/Exhibition');
 const { auth } = require('../middleware/auth');
+const url = require('url');
 
 //전시회 등록
 router.post('/register', auth, (req,res)=>{
     const exhibition = new Exhibition(req.body)
-    exhibition.user = req.user._id
+    exhibition.user = req.user.id
 
     exhibition.save((err,exhibition)=>{
         if(err)
@@ -35,8 +36,10 @@ router.get('/:userId/listUp',(req,res)=>{
 })
 
 //유저 전시회 리스트업
-router.post('/near',(req,res)=>{
-    Exhibition.find({latitude : {$gte:req.body.minLatitude, $lte: req.body.maxLatitude}, longitude: {$gte:req.body.minLongitude, $lte: req.body.maxLongitude}}, (err,exhibitions)=>{
+router.get('/near',(req,res)=>{
+    
+    const queryData = url.parse(req.url, true).query;
+    Exhibition.find({latitude : {$gte: Number(queryData.minLatitude), $lte: Number(queryData.maxLatitude)}, longitude: {$gte:Number(queryData.minLongitude), $lte: Number(queryData.maxLongitude)}}, (err,exhibitions)=>{
         if(err){
             console.log('list up exhibition error')
             return res.status(400).send(err);
@@ -46,6 +49,21 @@ router.post('/near',(req,res)=>{
             exhibitions: exhibitions
         })
     });
+
+})
+
+
+//이웃 최근 전시회 5개 찾기
+router.get('/following/recent', auth, (req,res)=>{
+    Exhibition.find({ user : {$in: req.user.following}}).sort({createdAt : -1})
+    .then((exhibitions)=>{
+        return res.status(200).json({
+            findFollowingRecentExhibitionSuccess: true,
+            exhibitions: exhibitions.slice(0,5) // 5개만
+        })
+    }).catch((err) =>{
+        return res.status(400).send(err);
+    })
 
 })
 

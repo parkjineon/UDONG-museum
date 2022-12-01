@@ -10,18 +10,18 @@ router.post('/register', (req,res)=>{
     user.save((err,user)=>{
         if(err) {
             //비밀번호 5자리 미만
-            if(req.body.password.length <= 5)
+            if(req.body.password.length <= 4)
                 return res.json({registerSuccess: false, message: '비밀번호를 5자리 이상으로 설정하십시오.'})
-            //이메일 주소 중복
+            //아이디 중복
             if(err.code === 11000) {
-                return res.json({registerSuccess: false, message: '이메일 주소가 이미 사용 중입니다.'})
+                return res.json({registerSuccess: false, message: '아이디가 이미 사용 중입니다.'})
             }
             return res.status(400).send(err);
         }
 
         return res.status(200).json({
             registerSuccess: true, 
-            email: user.email, 
+            id: user.id, 
             password: user.password
         })
     })
@@ -29,9 +29,9 @@ router.post('/register', (req,res)=>{
 
 //로그인
 router.post('/login', (req, res)=>{
-    User.findOne({'email': req.body.email}, (err,user) =>{
+    User.findOne({'id': req.body.id}, (err,user) =>{
         if(err) return res.status(400).send(err);
-        if(!user) return res.json({loginSuccess: false, message:'등록되지 않은 이메일 주소입니다.'})
+        if(!user) return res.json({loginSuccess: false, message:'등록되지 않은 아이디입니다.'})
 
         user.comparePassword(req.body.password, (err,isMatch)=>{
             if(err) return res.status(400).send(err)
@@ -55,7 +55,7 @@ router.get('/auth',auth,(req,res)=>{
         _id: req.user._id,
         isAdmin: req.user.role === 0 ? false : true,
         isAuth: true,
-        email: req.user.email,
+        id: req.user.id,
         name: req.user.name,
         role: req.user.role,
         image: req.user.image,
@@ -76,13 +76,13 @@ router.get('/logout', auth, (req,res)=>{
 
 //유저 상세 정보
 router.get('/:userId',(req,res)=>{
-    User.findOne({_id : req.params.userId},(err, info)=>{
+    User.findOne({id : req.params.userId},(err, info)=>{
         if(err){
             return res.status(400).send(err);
         }
         return res.status(200).json({
             getUserInfoSuccess: true, 
-            email: info.email,
+            id: info.id,
             name: info.name,
             role: info.role,
             image: info.image,
@@ -94,13 +94,13 @@ router.get('/:userId',(req,res)=>{
 })
 
 //유저 팔로우
-router.get('/:userId/follow', auth, (req,res)=>{
-    User.findOne({ _id : req.params.userId},(err, info)=>{
+router.post('/:userId/follow', auth, (req,res)=>{
+    User.findOneAndUpdate({ id : req.params.userId}, { $addToSet: { follower: req.user.id} },(err, info)=>{
         if(err){
             return res.status(400).send(err);
         }
         
-        User.updateOne({ _id : req.user._id},{ $addToSet: { following: info.email } },(err)=>{
+        User.updateOne({ _id : req.user._id},{ $addToSet: { following: info.id } },(err)=>{
             if(err){
                 return res.status(400).send(err);
             }
@@ -112,13 +112,13 @@ router.get('/:userId/follow', auth, (req,res)=>{
 })
 
 //유저 언팔로우
-router.get('/:userId/unfollow', auth, (req,res)=>{
-    User.findOne({_id : req.params.userId},(err, info)=>{
+router.post('/:userId/unfollow', auth, (req,res)=>{
+    User.findOneAndUpdate({id : req.params.userId},{ $pull: { follower: req.user.id } },(err, info)=>{
         if(err){
             return res.status(400).send(err);
         }
         
-        User.updateOne({ _id : req.user._id},{ $pull: { following: info.email } },(err)=>{
+        User.updateOne({ _id : req.user._id},{ $pull: { following: info.id } },(err)=>{
             if(err){
                 return res.status(400).send(err);
             }
@@ -133,7 +133,7 @@ router.get('/:userId/unfollow', auth, (req,res)=>{
 router.get('/mine/show',auth,(req,res)=>{
     res.status(200).json({
         _id: req.user._id,
-        email: req.user.email,
+        id: req.user.id,
         name: req.user.name,
         role: req.user.role,
         image: req.user.image,
@@ -145,12 +145,13 @@ router.get('/mine/show',auth,(req,res)=>{
 
 //내 정보 수정하기
 router.post('/mine/edit',auth,(req,res)=>{
-    User.findOneAndUpdate({ _id : req.user._id},req.body,(err)=>{
+    console.log(req.body);
+    User.updateOne({ _id : req.user._id},req.body,(err)=>{
         if(err){
             return res.status(400).send(err);
         }
         return res.status(200).json({
-            editEditMyInfoSuccess:true
+            editMyInfoSuccess:true
         })
     })
 })

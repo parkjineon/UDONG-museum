@@ -6,7 +6,7 @@ const { auth } = require('../middleware/auth');
 //사진 등록
 router.post('/register', auth, (req,res)=>{
     const photo = new Photo(req.body)
-    photo.user = req.user._id
+    photo.user = req.user.id
 
     photo.save((err,photo)=>{
         if(err)

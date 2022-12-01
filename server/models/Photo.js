@@ -15,6 +15,9 @@ const PhotoSchema = mongoose.Schema({
     user: {
         type: String
     },
+    title: {
+        type: String
+    },
     date: {
         type: Date,
         default: getCurrentDate()
@@ -22,7 +25,7 @@ const PhotoSchema = mongoose.Schema({
     description:{
         type: String
     },
-    src:{
+    img:{
         type: String
     },
     exhibition:{
@@ -32,7 +35,7 @@ const PhotoSchema = mongoose.Schema({
         type: Boolean,
         default: false
     }
-})
+}, { timestamps: true })
 
 PhotoSchema.statics.findByToken = function(token, cb){
     var Photo = this

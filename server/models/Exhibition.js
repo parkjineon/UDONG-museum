@@ -44,7 +44,7 @@ const ExhibitionSchema = mongoose.Schema({
     thumbnail: {
         type: String
     }
-})
+}, { timestamps: true })
 
 ExhibitionSchema.statics.findByToken = function(token, cb){
     var Exhibition = this
