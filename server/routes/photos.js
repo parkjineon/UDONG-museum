@@ -4,9 +4,10 @@ const { Photo } = require("../models/Photo");
 const { auth } = require("../middleware/auth");
 
 //사진 등록
-router.post("/register", auth, (req, res) => {
-  const photo = new Photo(req.body);
-  photo.user = req.user._id;
+router.post('/register', auth, (req,res)=>{
+    const photo = new Photo(req.body)
+    photo.user = req.user.id
+
 
   photo.save((err, photo) => {
     if (err) return res.status(400).send(err);

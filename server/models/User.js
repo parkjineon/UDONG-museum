@@ -9,14 +9,14 @@ const userSchema = mongoose.Schema({
         type: String,
         maxlength: 50
     },
-    email: {
+    id: {
         type: String,
         trim: true,
         unique: 1
     },
     password:{
         type: String,
-        minlength: 5
+        minlength: 4
     },
     role:{
         type: Number
@@ -31,6 +31,9 @@ const userSchema = mongoose.Schema({
         type: String
     },
     following: {
+        type: Array
+    },
+    follower:{
         type: Array
     },
     token:{
