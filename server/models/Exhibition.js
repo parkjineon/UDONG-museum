@@ -12,39 +12,41 @@ function getCurrentDate() {
 }
 
 const ExhibitionSchema = mongoose.Schema({
-  name: {
-    type: String,
-  },
-  user: {
-    type: String,
-  },
-  startDate: {
-    type: Date,
-    default: getCurrentDate(),
-  },
-  endDate: {
-    type: Date,
-    default: getCurrentDate(),
-  },
-  latitude: {
-    type: Number,
-  },
-  longitude: {
-    type: Number,
-  },
-  description: {
-    type: String,
-  },
-  photos: {
-    type: Array,
-  },
-  used: {
-    type: Boolean,
-  },
-  thumbnail: {
-    type: String,
-  },
-});
+
+    name: {
+        type: String
+    },
+    user: {
+        type: String
+    },
+    startDate: {
+        type: Date,
+        default: getCurrentDate()
+    },
+    endDate: {
+        type: Date,
+        default: getCurrentDate()
+    },
+    latitude:{
+        type: Number
+    },
+    longitude:{
+        type: Number
+    },
+    description:{
+        type: String
+    },
+    photos: {
+        type: Array
+    },
+    used: {
+        type: Boolean
+    },
+    thumbnail: {
+        type: String
+    }
+}, { timestamps: true })
+
 
 ExhibitionSchema.statics.findByToken = function (token, cb) {
   var Exhibition = this;
