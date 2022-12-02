@@ -21,7 +21,7 @@ function ProfilePage() {
   const [photos, setPhotos] = useState([]);
   const { uid } = useParams();
   let me = useSelector((state) => state.user.user);
-  const isMe = me._id === uid;
+  const isMe = me.id === uid;
 
   const { data: get_user_data } = useQuery(
     ["get_user", uid],
@@ -37,7 +37,7 @@ function ProfilePage() {
   const { data } = useQuery(["get_me", uid], GET_ME, {
     staleTime: Infinity,
     onSuccess: (data) => {
-      if (data.data.following.includes(user.email)) {
+      if (data.data.following.includes(user.id)) {
         setIsFollowing(true);
       }
     },
@@ -59,6 +59,7 @@ function ProfilePage() {
     if (isFollowing) {
       unfollow(uid, {
         onSuccess: (res) => {
+          console.log(res);
           if (res.data.unfollowUserSuccess) {
             setIsFollowing(false);
           }
@@ -67,6 +68,7 @@ function ProfilePage() {
     } else {
       follow(uid, {
         onSuccess: (res) => {
+          console.log(res);
           if (res.data.followUserSuccess) {
             setIsFollowing(true);
           }

@@ -4,6 +4,10 @@ import { GET_NEAR } from "../../../api/exhibitionAPI";
 
 function NearExhibitions() {
   const location = useSelector((state) => state.user.location);
+  // const location = {
+  //   latitude: 37.557415823247524,
+  //   longitude: 127.04456318113543,
+  // };
   // latitude, longitude
   // 고덕역 37.554229535691064, 127.15349448125242
   // 강동역 37.53529779594927, 127.13263739329967

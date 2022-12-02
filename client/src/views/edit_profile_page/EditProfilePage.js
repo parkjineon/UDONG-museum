@@ -31,7 +31,7 @@ function EditProfilePage() {
     editProfile(data, {
       onSuccess: (res) => {
         console.log(res);
-        if (res.data.editEditMyInfoSuccess) {
+        if (res.data.editMyInfoSuccess) {
           setIsEditSuccess(true);
         }
       },
@@ -56,7 +56,7 @@ function EditProfilePage() {
         <EditForm onSubmit={handleSubmit(onFormSubmit)}>
           <InputContainer>
             <Label>아이디</Label>
-            <Input defaultValue={user?.email} readOnly />
+            <Input defaultValue={user?.id} readOnly />
           </InputContainer>
           <InputContainer>
             <Label>이름</Label>

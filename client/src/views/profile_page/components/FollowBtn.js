@@ -10,6 +10,7 @@ function FollowBtn({ uid, isFollowing, setIsFollowing }) {
     if (isFollowing) {
       unfollow(uid, {
         onSuccess: (res) => {
+          console.log(res);
           if (res.data.unfollowUserSuccess) {
             setIsFollowing(false);
           }
@@ -18,6 +19,7 @@ function FollowBtn({ uid, isFollowing, setIsFollowing }) {
     } else {
       follow(uid, {
         onSuccess: (res) => {
+          console.log(res);
           if (res.data.followUserSuccess) {
             setIsFollowing(true);
           }
@@ -48,4 +50,7 @@ const ProfileBtn = styled.div`
 const FollowBtnContainer = styled(ProfileBtn)`
   background-color: #2abce7;
   color: white;
+  &:hover {
+    cursor: pointer;
+  }
 `;

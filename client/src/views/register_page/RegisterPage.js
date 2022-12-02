@@ -21,9 +21,9 @@ function RegisterPage() {
   } = useForm();
   const crntPassword = watch("password", "");
   const onFormSubmit = () => {
-    const { email, password, name } = getValues();
+    const { id, password, name } = getValues();
     const data = {
-      email,
+      id,
       password,
       name,
     };
@@ -52,11 +52,11 @@ function RegisterPage() {
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <S.FormInput>
             <S.Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              {...register("email", {
-                required: "Email is required",
+              id="id"
+              type="id"
+              placeholder="ID"
+              {...register("id", {
+                required: "ID is required",
               })}
             />
             <FormError text={errors.email?.message} />

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const GET_NEAR = async (data) => {
   try {
-    const response = await axios.post("/api/exhibitions/near", data);
+    const response = await axios.get("/api/exhibitions/near", { params: data });
     return response;
   } catch (err) {
     console.log(err);

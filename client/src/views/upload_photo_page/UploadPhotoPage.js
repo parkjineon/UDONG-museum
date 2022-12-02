@@ -28,7 +28,7 @@ function UploadPhotoPage() {
     upload(data, {
       onSuccess: (res) => {
         if (res.data.registerPhotoSuccess) {
-          navigate(`/profile/${user._id}`);
+          navigate(`/${user.id}`);
         }
       },
     });

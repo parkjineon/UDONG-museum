@@ -20,14 +20,16 @@ function LoginPage() {
     getValues,
     watch,
   } = useForm();
+
   const onFormSubmit = () => {
-    const { email, password } = getValues();
+    const { id, password } = getValues();
     const data = {
-      email,
+      id,
       password,
     };
     login(data, {
       onSuccess: (res) => {
+        console.log(res);
         if (res.data.loginSuccess) {
           dispatch(userActions.login());
           navigate("/");
@@ -46,11 +48,11 @@ function LoginPage() {
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <S.FormInput>
             <S.Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              {...register("email", {
-                required: "Email is required",
+              id="id"
+              type="id"
+              placeholder="ID"
+              {...register("id", {
+                required: "ID is required",
               })}
             />
             <FormError text={errors.email?.message} />
