@@ -24,6 +24,7 @@ function UploadPhotoPage() {
       title,
       description,
     };
+    console.log(data);
     upload(data, {
       onSuccess: (res) => {
         if (res.data.registerPhotoSuccess) {

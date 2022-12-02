@@ -38,7 +38,7 @@ const REGISTER = async (data) => {
 };
 const AUTH = async () => {
   try {
-    const response = axios.get("http://localhost:3001/auth");
+    const response = await axios.get("http://localhost:3001/auth");
     return response;
   } catch (err) {
     console.log(err);
@@ -50,7 +50,7 @@ const AUTH = async () => {
 };
 const FOLLOW = async (uid) => {
   try {
-    const response = axios.post(`/api/users/${uid}/follow`);
+    const response = await axios.post(`/api/users/${uid}/follow`);
     return response;
   } catch (err) {
     console.log(err);
@@ -62,7 +62,7 @@ const FOLLOW = async (uid) => {
 };
 const UNFOLLOW = async (uid) => {
   try {
-    const response = axios.post(`/api/users/${uid}/unfollow`);
+    const response = await axios.post(`/api/users/${uid}/unfollow`);
     return response;
   } catch (err) {
     console.log(err);
@@ -74,7 +74,7 @@ const UNFOLLOW = async (uid) => {
 };
 const GET_ME = async () => {
   try {
-    const response = axios.get("/api/users/mine/show");
+    const response = await axios.get("/api/users/mine/show");
     return response;
   } catch (err) {
     console.log(err);
@@ -86,7 +86,7 @@ const GET_ME = async () => {
 };
 const GET_USER = async (uid) => {
   try {
-    const response = axios.get(`/api/users/${uid}`);
+    const response = await axios.get(`/api/users/${uid}`);
     return response;
   } catch (err) {
     console.log(err);
@@ -97,9 +97,9 @@ const GET_USER = async (uid) => {
   }
 };
 
-const EDIT_PROFILE = async () => {
+const EDIT_PROFILE = async (data) => {
   try {
-    const response = axios.post("/api/users/mine/edit");
+    const response = await axios.post("/api/users/mine/edit", data);
     return response;
   } catch (err) {
     console.log(err);

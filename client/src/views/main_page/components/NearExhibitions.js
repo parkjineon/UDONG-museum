@@ -21,6 +21,7 @@ function NearExhibitions() {
     () => GET_NEAR(target_area),
     {
       onSuccess: (data) => {
+        console.log(target_area);
         console.log(data);
       },
     }
