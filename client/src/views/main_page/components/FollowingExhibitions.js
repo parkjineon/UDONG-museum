@@ -22,7 +22,7 @@ function FollowingExhibitions() {
           ))}
         </>
       ) : (
-        <>start follow others!</>
+        <>start following others!</>
       )}
     </>
   );

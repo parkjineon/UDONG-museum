@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
 import { userActions } from "../../store/userSlice";
+import Banner from "./components/Banner";
 import Photo from "./components/Photo";
 import UploadBtn from "./components/UploadBtn";
 
@@ -80,10 +81,12 @@ function ProfilePage() {
     <ProfilePageContainer>
       <HeaderContainer>
         <ProfileImg></ProfileImg>
-        <UserInfo>
-          <Name>{user?.name}</Name>
-          <Description>{user?.description}</Description>
-          <Location>{user?.location}</Location>
+        <UserInfoContainer>
+          <UserInfo>
+            <Name>{user?.name}</Name>
+            <Description>{user?.description}</Description>
+            <Location>{user?.location}</Location>
+          </UserInfo>
           <ProfileBtnContainer>
             {isMe ? (
               <>
@@ -96,19 +99,14 @@ function ProfilePage() {
                 </Link>
               </>
             ) : (
-              // <FollowBtn
-              //   uid={uid}
-              //   isFollowing={isFollowing}
-              //   setIsFollowing={setIsFollowing}
-              // />
               <FollowBtn onClick={toggleFollow}>
                 {isFollowing ? "unfollow" : "follow"}
               </FollowBtn>
             )}
           </ProfileBtnContainer>
-        </UserInfo>
+        </UserInfoContainer>
       </HeaderContainer>
-      <BannerContainer></BannerContainer>
+      <Banner />
       <FeedContainer>
         {photos.map((photo, index) => (
           <Photo photo={photo} key={index} />
@@ -135,12 +133,14 @@ const ProfileImg = styled.div`
   border: 2px solid ${(props) => props.theme.colors.point};
   /* background-color: ${(props) => props.theme.colors.point}; */
 `;
-const UserInfo = styled.div`
+const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 50px;
+  justify-content: space-between;
   /* padding-top: 20px; */
 `;
+const UserInfo = styled.div``;
 const Name = styled.div`
   color: ${(props) => props.theme.colors.description};
   font-size: 40px;
@@ -173,14 +173,7 @@ const EditProfileBtn = styled(ProfileBtn)`
   background-color: ${(props) => props.theme.colors.point};
   color: white;
 `;
-const BannerContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  border: 2px solid ${(props) => props.theme.colors.point};
-  margin-top: 40px;
-  border-radius: 20px;
-  /* background-color: ${(props) => props.theme.colors.point}; */
-`;
+
 const FeedContainer = styled.div`
   width: 100%;
   display: flex;

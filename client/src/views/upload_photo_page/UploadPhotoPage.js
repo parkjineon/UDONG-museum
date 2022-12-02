@@ -18,10 +18,11 @@ function UploadPhotoPage() {
     watch,
   } = useForm();
   const onFormSubmit = () => {
-    const { photo, title, description } = getValues();
+    const { photo, title, date, description } = getValues();
     const data = {
       photo,
       title,
+      date,
       description,
     };
     console.log(data);
@@ -36,7 +37,7 @@ function UploadPhotoPage() {
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
       <PhotoFormContainer>
-        <UploadForm onSubmit={handleSubmit(onFormSubmit)}>
+        <form onSubmit={handleSubmit(onFormSubmit)}>
           <div style={{ fontSize: "30px" }}>사진 등록하기</div>
           <UploadFormInputs>
             <label htmlFor="photo">
@@ -62,7 +63,13 @@ function UploadPhotoPage() {
                   required: "Title is required",
                 })}
                 isError={errors.title}
-              ></TitleInput>
+              />
+              <FormLabel htmlFor="date">날짜</FormLabel>
+              <DateInput
+                type="date"
+                id="date"
+                {...register("date")}
+              ></DateInput>
               <FormLabel htmlFor="description">설명</FormLabel>
               <DescriptionInput
                 type="text"
@@ -76,7 +83,7 @@ function UploadPhotoPage() {
           >
             <FormSubmitBtn>등록하기</FormSubmitBtn>
           </div>
-        </UploadForm>
+        </form>
       </PhotoFormContainer>
     </div>
   );
@@ -111,12 +118,10 @@ const UploadInfoInput = styled.div`
   flex-direction: column;
   margin-left: 50px;
   font-size: 20px;
-  /* background-color: beige; */
   flex-grow: 1;
-  /* margin-top: 20px; */
 `;
 const FormLabel = styled.label`
-  margin-top: 20px;
+  /* margin-top: 20px; */
 `;
 const TitleInput = styled.input`
   /* width: 100%; */
@@ -134,6 +139,7 @@ const TitleInput = styled.input`
     css`
       border: 1px solid ${(props) => props.theme.colors.error};
     `}
+  margin-bottom:10px;
 `;
 const DescriptionInput = styled.textarea`
   margin-top: 10px;
@@ -147,6 +153,18 @@ const DescriptionInput = styled.textarea`
   resize: none;
   flex-grow: 1;
   font-family: "Noto Sans KR", sans-serif;
+`;
+const DateInput = styled.input`
+  background-color: #f2f6f9;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  padding: 5px;
+  margin-top: 10px;
+  font-family: "Noto Sans KR", sans-serif;
+  margin-bottom: 10px;
+  width: 30%;
 `;
 const FormSubmitBtn = styled.button`
   display: flex;
