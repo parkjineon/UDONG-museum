@@ -24,10 +24,7 @@ function NearExhibitions() {
     ["get_near", target_area],
     () => GET_NEAR(target_area),
     {
-      onSuccess: (data) => {
-        console.log(target_area);
-        console.log(data);
-      },
+      onSuccess: (data) => {},
     }
   );
   return <>{location.latitude}</>;

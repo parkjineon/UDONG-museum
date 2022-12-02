@@ -27,7 +27,6 @@ function EditProfilePage() {
       description,
       password,
     };
-    console.log(data);
     editProfile(data, {
       onSuccess: (res) => {
         console.log(res);
