@@ -15,9 +15,15 @@ function FollowingExhibitions() {
 
   return (
     <>
-      {exhibitions.map((exhibition, idx) => (
-        <ExhibitionCard exhibition={exhibition} key={idx} />
-      ))}
+      {exhibitions.length !== 0 ? (
+        <>
+          {exhibitions.map((exhibition, idx) => (
+            <ExhibitionCard exhibition={exhibition} key={idx} />
+          ))}
+        </>
+      ) : (
+        <>start follow others!</>
+      )}
     </>
   );
 }

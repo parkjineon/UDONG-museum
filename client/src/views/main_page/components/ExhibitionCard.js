@@ -23,7 +23,7 @@ const CardContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   /* background-color: beige; */
-  margin-bottom: 10px;
+  margin: 5px 0px;
 `;
 
 const ProfilePhoto = styled.div`

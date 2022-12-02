@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import { GET_NEAR } from "../../../api/exhibitionAPI";
+import ExhibitionCard from "./ExhibitionCard";
 
 function NearExhibitions() {
+  const [exhibitions, setExhibitions] = useState([]);
   const location = useSelector((state) => state.user.location);
   // const location = {
   //   latitude: 37.557415823247524,
@@ -24,9 +27,23 @@ function NearExhibitions() {
     ["get_near", target_area],
     () => GET_NEAR(target_area),
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        setExhibitions(data.data.exhibitions);
+      },
     }
   );
-  return <>{location.latitude}</>;
+  return (
+    <>
+      {exhibitions.length !== 0 ? (
+        <>
+          {exhibitions.map((exhibition, idx) => (
+            <ExhibitionCard exhibition={exhibition} key={idx} />
+          ))}
+        </>
+      ) : (
+        <>No exhibition nearby!</>
+      )}
+    </>
+  );
 }
 export default NearExhibitions;
