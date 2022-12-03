@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { GET_RECENT } from "../../../api/exhibitionAPI";
 import ExhibitionCard from "./ExhibitionCard";
 

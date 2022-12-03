@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
 import { profileActions } from "../../store/profileSlice";
-import { userActions } from "../../store/userSlice";
 import Banner from "./components/Banner";
 import Feed from "./components/Feed";
 import UploadBtn from "./components/UploadBtn";
@@ -132,14 +131,12 @@ const ProfileImg = styled.div`
   height: 200px;
   border-radius: 100px;
   border: 2px solid ${(props) => props.theme.colors.point};
-  /* background-color: ${(props) => props.theme.colors.point}; */
 `;
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 50px;
   justify-content: space-between;
-  /* padding-top: 20px; */
 `;
 const UserInfo = styled.div``;
 const Name = styled.div`

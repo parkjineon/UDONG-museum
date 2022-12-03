@@ -11,5 +11,4 @@ const BannerContainer = styled.div`
   border: 2px solid ${(props) => props.theme.colors.point};
   margin-top: 40px;
   border-radius: 20px;
-  /* background-color: ${(props) => props.theme.colors.point}; */
 `;

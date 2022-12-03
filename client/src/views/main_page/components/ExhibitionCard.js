@@ -22,7 +22,6 @@ const CardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: beige; */
   margin: 5px 0px;
 `;
 
@@ -35,7 +34,6 @@ const ProfilePhoto = styled.div`
 const ExhibitionInfo = styled.div`
   align-items: flex-end;
   display: flex;
-  /* flex-direction: column; */
 `;
 
 const ExhibitionTitle = styled.div`

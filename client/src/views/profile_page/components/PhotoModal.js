@@ -99,7 +99,6 @@ const PhotoModalContainer = styled.div`
   height: 600px;
   background-color: white;
   display: flex;
-  /* border-radius: 20px; */
 `;
 const ModalBtn = styled.div`
   position: absolute;

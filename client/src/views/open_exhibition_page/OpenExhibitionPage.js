@@ -89,7 +89,6 @@ const FormLabel = styled.label`
   margin-top: 20px;
 `;
 const TitleInput = styled.input`
-  /* width: 100%; */
   margin-top: 10px;
   background-color: #f2f6f9;
   padding: 10px;
@@ -126,7 +125,6 @@ const FormSubmitBtn = styled.button`
   height: 40px;
   border-radius: 7px;
   margin-top: 20px;
-  /* font-weight: bold; */
   background-color: ${(props) => props.theme.colors.point};
   color: white;
   font-family: "Noto Sans KR", sans-serif;

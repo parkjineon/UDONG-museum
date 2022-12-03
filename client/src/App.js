@@ -1,11 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./components/navigation/Nav";
 import LoginPage from "./views/login_page/LoginPage";
 import MainPage from "./views/main_page/MainPage";
-import rootReducer from "./store/index";
 import store from "./store/index";
 import RegisterPage from "./views/register_page/RegisterPage";
 import styled from "styled-components";
