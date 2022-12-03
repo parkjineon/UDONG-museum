@@ -2,10 +2,14 @@ import styled, { css } from "styled-components";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
-import { EDIT_PHOTO, GET_PHOTO, UPLOAD_PHOTO } from "../../api/photoAPI";
+import {
+  DELETE_PHOTO,
+  EDIT_PHOTO,
+  GET_PHOTO,
+  UPLOAD_PHOTO,
+} from "../../api/photoAPI";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 import moment from "moment";
 
 function UploadPhotoPage({ isUpload }) {
@@ -14,6 +18,7 @@ function UploadPhotoPage({ isUpload }) {
   const user = useSelector((state) => state.user.user);
   const { mutate: upload } = useMutation(UPLOAD_PHOTO);
   const { mutate: edit } = useMutation(EDIT_PHOTO);
+  const { mutate: del } = useMutation(DELETE_PHOTO);
 
   const {
     register,
@@ -57,6 +62,7 @@ function UploadPhotoPage({ isUpload }) {
         { pid, data },
         {
           onSuccess: (res) => {
+            console.log(res);
             if (res.data.editPhotoInfoSuccess) {
               navigate(-1);
             }
@@ -64,6 +70,16 @@ function UploadPhotoPage({ isUpload }) {
         }
       );
     }
+  };
+
+  const onDeleteClick = () => {
+    del(pid, {
+      onSuccess: (res) => {
+        if (res.data.deletePhotoSuccess) {
+          navigate(-1);
+        }
+      },
+    });
   };
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
@@ -95,7 +111,6 @@ function UploadPhotoPage({ isUpload }) {
                 {...register("title", {
                   required: "Title is required",
                 })}
-                // defaultValue={photo?.title}
                 isError={errors.title}
               />
               <FormLabel htmlFor="date">날짜</FormLabel>
@@ -109,13 +124,17 @@ function UploadPhotoPage({ isUpload }) {
                 type="text"
                 id="description"
                 {...register("description")}
-                // defaultValue={photo?.description}
               />
             </UploadInfoInput>
           </UploadFormInputs>
           <div
             style={{ width: "100%", display: "flex", justifyContent: "right" }}
           >
+            {!isUpload && (
+              <PhotoDeleteBtn onClick={handleSubmit(onDeleteClick)}>
+                사진 삭제
+              </PhotoDeleteBtn>
+            )}
             <FormSubmitBtn>
               {isUpload ? <>등록하기</> : <>수정하기</>}
             </FormSubmitBtn>
@@ -157,11 +176,8 @@ const UploadInfoInput = styled.div`
   font-size: 20px;
   flex-grow: 1;
 `;
-const FormLabel = styled.label`
-  /* margin-top: 20px; */
-`;
+const FormLabel = styled.label``;
 const TitleInput = styled.input`
-  /* width: 100%; */
   margin-top: 10px;
   background-color: #f2f6f9;
   padding: 10px;
@@ -203,20 +219,26 @@ const DateInput = styled.input`
   margin-bottom: 10px;
   width: 30%;
 `;
-const FormSubmitBtn = styled.button`
+const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0px 10px;
   height: 40px;
   border-radius: 7px;
+  border: none;
   margin-top: 20px;
-  /* font-weight: bold; */
-  background-color: ${(props) => props.theme.colors.point};
-  color: white;
+  margin-left: 10px;
   font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
   &:hover {
     cursor: pointer;
   }
+  color: white;
+`;
+const FormSubmitBtn = styled(Button)`
+  background-color: ${(props) => props.theme.colors.point};
+`;
+const PhotoDeleteBtn = styled(Button)`
+  background-color: ${(props) => props.theme.colors.error};
 `;

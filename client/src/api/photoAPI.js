@@ -36,7 +36,18 @@ const GET_PHOTO = async (pid) => {
     };
   }
 };
-const DELETE_PHOTO = () => {};
+const DELETE_PHOTO = async (pid) => {
+  try {
+    const response = await axios.post(`/api/photos/${pid}/delete`);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 const PHOTO_LISTUP = async (uid) => {
   try {
     const response = await axios.get(`/api/photos/${uid}/listUp`);
