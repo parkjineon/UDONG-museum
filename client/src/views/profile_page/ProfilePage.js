@@ -7,7 +7,7 @@ import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
 import { userActions } from "../../store/userSlice";
 import Banner from "./components/Banner";
-import Photo from "./components/Photo";
+import Feed from "./components/Feed";
 import UploadBtn from "./components/UploadBtn";
 
 const default_user = {
@@ -107,11 +107,7 @@ function ProfilePage() {
         </UserInfoContainer>
       </HeaderContainer>
       <Banner />
-      <FeedContainer>
-        {photos.map((photo, index) => (
-          <Photo photo={photo} key={index} />
-        ))}
-      </FeedContainer>
+      <Feed photos={photos} />
       {isMe && <UploadBtn />}
     </ProfilePageContainer>
   );
@@ -172,12 +168,4 @@ const FollowBtn = styled(ProfileBtn)`
 const EditProfileBtn = styled(ProfileBtn)`
   background-color: ${(props) => props.theme.colors.point};
   color: white;
-`;
-
-const FeedContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  justify-content: space-between;
 `;
