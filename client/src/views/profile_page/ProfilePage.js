@@ -28,12 +28,14 @@ function ProfilePage() {
   dispatch(profileActions.isMe(isMe));
 
   const { data: get_user_data } = useQuery(
+    // get user of current profile
     ["get_user", uid],
     () => GET_USER(uid),
     {
       onSuccess: (get_user_data) => {
         if (get_user_data.data.getUserInfoSuccess) {
           setUser(get_user_data.data);
+          dispatch(profileActions.user(get_user_data.data));
         }
       },
     }

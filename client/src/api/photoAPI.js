@@ -12,8 +12,30 @@ const UPLOAD_PHOTO = async (data) => {
     };
   }
 };
-const EDIT_PHOTO = () => {};
-const GET_PHOTO = () => {};
+const EDIT_PHOTO = async ({ pid, data }) => {
+  try {
+    const response = await axios.post(`/api/photos/${pid}/edit`, data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
+const GET_PHOTO = async (pid) => {
+  try {
+    const response = await axios.get(`/api/photos/${pid}`);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 const DELETE_PHOTO = () => {};
 const PHOTO_LISTUP = async (uid) => {
   try {

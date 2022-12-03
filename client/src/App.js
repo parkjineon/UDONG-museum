@@ -89,7 +89,15 @@ function App() {
                     path="/photo/upload"
                     element={
                       <PrivateRoute>
-                        <UploadPhotoPage />
+                        <UploadPhotoPage isUpload={true} />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/:pid/edit"
+                    element={
+                      <PrivateRoute>
+                        <UploadPhotoPage isUpload={false} />
                       </PrivateRoute>
                     }
                   />

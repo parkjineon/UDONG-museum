@@ -7,9 +7,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 function PhotoModal({ index, photos, setIsModalOpen }) {
-  const { isMe } = useSelector((state) => state.profile);
+  const { isMe, user } = useSelector((state) => state.profile);
   const [photoIndex, setPhotoIndex] = useState(index);
-  const { name } = useSelector((state) => state.user.user);
   useEffect(() => {
     document.body.style.cssText = `
           position: fixed; 
@@ -66,7 +65,7 @@ function PhotoModal({ index, photos, setIsModalOpen }) {
                 <div style={{ color: "#9F9F9F" }}>
                   {moment(photos[photoIndex].date).format("YYYY. MM. DD.")}
                 </div>
-                <div>작가 {name}</div>
+                <div>작가 {user.name}</div>
               </BottomInfo>
             </PhotoInfoContainer>
           </>

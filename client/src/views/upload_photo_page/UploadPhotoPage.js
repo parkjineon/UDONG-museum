@@ -1,22 +1,38 @@
 import styled, { css } from "styled-components";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { UPLOAD_PHOTO } from "../../api/photoAPI";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
+import { EDIT_PHOTO, GET_PHOTO, UPLOAD_PHOTO } from "../../api/photoAPI";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import moment from "moment";
 
-function UploadPhotoPage() {
+function UploadPhotoPage({ isUpload }) {
   const navigate = useNavigate();
+  const { pid } = useParams();
   const user = useSelector((state) => state.user.user);
   const { mutate: upload } = useMutation(UPLOAD_PHOTO);
+  const { mutate: edit } = useMutation(EDIT_PHOTO);
+
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    reset,
+    formState: { errors },
     getValues,
-    watch,
   } = useForm();
+  const { data } = useQuery(["get_photo", pid], () => GET_PHOTO(pid), {
+    onSuccess: (data) => {
+      reset({
+        // set default form value
+        title: data.data.info?.title,
+        description: data.data.info?.description,
+        date: moment(data.data.info?.date).format("yyyy-MM-DD"),
+        photo: data.data.info?.img,
+      });
+    },
+  });
   const onFormSubmit = () => {
     const { photo, title, date, description } = getValues();
     const data = {
@@ -25,20 +41,37 @@ function UploadPhotoPage() {
       date,
       description,
     };
-    console.log(data);
-    upload(data, {
-      onSuccess: (res) => {
-        if (res.data.registerPhotoSuccess) {
-          navigate(`/${user.id}`);
+
+    if (isUpload) {
+      // upload photo
+      upload(data, {
+        onSuccess: (res) => {
+          if (res.data.registerPhotoSuccess) {
+            navigate(`/${user.id}`);
+          }
+        },
+      });
+    } else {
+      // edit photo
+      edit(
+        { pid, data },
+        {
+          onSuccess: (res) => {
+            if (res.data.editPhotoInfoSuccess) {
+              navigate(-1);
+            }
+          },
         }
-      },
-    });
+      );
+    }
   };
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
       <PhotoFormContainer>
         <form onSubmit={handleSubmit(onFormSubmit)}>
-          <div style={{ fontSize: "30px" }}>사진 등록하기</div>
+          <div style={{ fontSize: "30px" }}>
+            {isUpload ? <>사진 등록하기</> : <>사진 수정하기</>}
+          </div>
           <UploadFormInputs>
             <label htmlFor="photo">
               <UploadPhotoInput>
@@ -51,7 +84,7 @@ function UploadPhotoPage() {
               accept="image/png, image/jpeg"
               style={{ display: "none" }}
               {...register("photo", {
-                required: "Photo is required",
+                // required: "Photo is required",
               })}
             />
             <UploadInfoInput>
@@ -62,6 +95,7 @@ function UploadPhotoPage() {
                 {...register("title", {
                   required: "Title is required",
                 })}
+                // defaultValue={photo?.title}
                 isError={errors.title}
               />
               <FormLabel htmlFor="date">날짜</FormLabel>
@@ -75,13 +109,16 @@ function UploadPhotoPage() {
                 type="text"
                 id="description"
                 {...register("description")}
+                // defaultValue={photo?.description}
               />
             </UploadInfoInput>
           </UploadFormInputs>
           <div
             style={{ width: "100%", display: "flex", justifyContent: "right" }}
           >
-            <FormSubmitBtn>등록하기</FormSubmitBtn>
+            <FormSubmitBtn>
+              {isUpload ? <>등록하기</> : <>수정하기</>}
+            </FormSubmitBtn>
           </div>
         </form>
       </PhotoFormContainer>
