@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { PHOTO_LISTUP } from "../../api/photoAPI";
 import { GET_ME, GET_USER, FOLLOW, UNFOLLOW } from "../../api/userAPI";
+import { profileActions } from "../../store/profileSlice";
 import { userActions } from "../../store/userSlice";
 import Banner from "./components/Banner";
 import Feed from "./components/Feed";
@@ -17,12 +18,14 @@ const default_user = {
   following: [],
 };
 function ProfilePage() {
+  const dispatch = useDispatch();
   const [isFollowing, setIsFollowing] = useState(false);
   const [user, setUser] = useState(default_user);
   const [photos, setPhotos] = useState([]);
   const { uid } = useParams();
   let me = useSelector((state) => state.user.user);
   const isMe = me.id === uid;
+  dispatch(profileActions.isMe(isMe));
 
   const { data: get_user_data } = useQuery(
     ["get_user", uid],
@@ -107,7 +110,7 @@ function ProfilePage() {
         </UserInfoContainer>
       </HeaderContainer>
       <Banner />
-      <Feed photos={photos} />
+      <Feed photos={photos} isMe={isMe} />
       {isMe && <UploadBtn />}
     </ProfilePageContainer>
   );

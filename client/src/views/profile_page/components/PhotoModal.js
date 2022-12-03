@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward, IoIosClose } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 function PhotoModal({ index, photos, setIsModalOpen }) {
+  const { isMe } = useSelector((state) => state.profile);
   const [photoIndex, setPhotoIndex] = useState(index);
   const { name } = useSelector((state) => state.user.user);
   useEffect(() => {
@@ -32,6 +35,43 @@ function PhotoModal({ index, photos, setIsModalOpen }) {
   return (
     <>
       <PhotoModalContainer>
+        {!isMe && photos[photoIndex].used ? (
+          <>전시중 안내</>
+        ) : (
+          <>
+            <PhotoContainer></PhotoContainer>
+            <PhotoInfoContainer>
+              <TopInfo>
+                <PhotoNo>00{photoIndex + 1}</PhotoNo>
+                <PhotoTitle>
+                  {photos[photoIndex].title}
+                  <Link to={`/${photos[photoIndex]._id}/edit`}>
+                    <PhotoEditBtn>{isMe && <CiEdit size={30} />}</PhotoEditBtn>
+                  </Link>
+                </PhotoTitle>
+
+                <div
+                  style={{
+                    width: "100%",
+                    height: "1px",
+                    backgroundColor: "#E2E2E2",
+                    marginTop: "10px",
+                  }}
+                ></div>
+                <PhotoDescription>
+                  {photos[photoIndex].description}
+                </PhotoDescription>
+              </TopInfo>
+              <BottomInfo>
+                <div style={{ color: "#9F9F9F" }}>
+                  {moment(photos[photoIndex].date).format("YYYY. MM. DD.")}
+                </div>
+                <div>작가 {name}</div>
+              </BottomInfo>
+            </PhotoInfoContainer>
+          </>
+        )}
+
         <ModalLeftBtn disabled={photoIndex === 0} onClick={onLeftClick}>
           <IoIosArrowBack size={45} />
         </ModalLeftBtn>
@@ -44,35 +84,6 @@ function PhotoModal({ index, photos, setIsModalOpen }) {
         <ModalCloseBtn onClick={closeModal}>
           <IoIosClose size={50} />
         </ModalCloseBtn>
-        <PhotoContainer></PhotoContainer>
-        <PhotoInfoContainer>
-          <TopInfo>
-            <div style={{ fontSize: "20px" }}>00{photoIndex + 1}</div>
-            <div style={{ fontSize: "40px", fontWeight: "bold" }}>
-              {photos[photoIndex].title}
-            </div>
-
-            <div
-              style={{
-                width: "100%",
-                height: "1px",
-                backgroundColor: "#E2E2E2",
-                marginTop: "10px",
-              }}
-            ></div>
-            <div
-              style={{ color: "#9F9F9F", fontSize: "15px", marginTop: "20px" }}
-            >
-              {photos[photoIndex].description}
-            </div>
-          </TopInfo>
-          <BottomInfo>
-            <div style={{ color: "#9F9F9F" }}>
-              {moment(photos[photoIndex].date).format("YYYY. MM. DD.")}
-            </div>
-            <div>작가 {name}</div>
-          </BottomInfo>
-        </PhotoInfoContainer>
       </PhotoModalContainer>
     </>
   );
@@ -134,6 +145,23 @@ const PhotoInfoContainer = styled.div`
 const TopInfo = styled.div`
   display: flex;
   flex-direction: column;
+`;
+const PhotoNo = styled.div`
+  font-size: 20px;
+`;
+const PhotoTitle = styled.div`
+  font-size: 40px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+`;
+const PhotoEditBtn = styled.div`
+  color: black;
+`;
+const PhotoDescription = styled.div`
+  color: #9f9f9f;
+  font-size: 15px;
+  margin-top: 20px;
 `;
 const BottomInfo = styled.div`
   display: flex;
