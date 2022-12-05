@@ -25,7 +25,18 @@ const GET_RECENT = async () => {
     };
   }
 };
-const createExhibition = () => {};
+const CREATE_EXHIBITION = async (data) => {
+  try {
+    const response = await axios.post("/api/exhibitions/register", data);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 const deleteExhibition = () => {};
 const editExhibition = () => {};
 const getExhibition = () => {};
@@ -33,7 +44,7 @@ const getExhibition = () => {};
 export {
   GET_NEAR,
   GET_RECENT,
-  createExhibition,
+  CREATE_EXHIBITION,
   deleteExhibition,
   editExhibition,
   getExhibition,

@@ -9,6 +9,7 @@ import { profileActions } from "../../store/profileSlice";
 import Banner from "./components/Banner";
 import Feed from "./components/Feed";
 import UploadBtn from "./components/UploadBtn";
+import { VscEdit } from "react-icons/vsc";
 
 const default_user = {
   name: "",
@@ -84,7 +85,15 @@ function ProfilePage() {
   return (
     <ProfilePageContainer>
       <HeaderContainer>
-        <ProfileImg></ProfileImg>
+        <ProfileImg>
+          {isMe && (
+            <Link to="/profile/edit">
+              <EditProfileBtn>
+                <VscEdit size={35} style={{ color: "white" }} />
+              </EditProfileBtn>
+            </Link>
+          )}
+        </ProfileImg>
         <UserInfoContainer>
           <UserInfo>
             <Name>{user?.name}</Name>
@@ -95,11 +104,8 @@ function ProfilePage() {
             {isMe ? (
               <>
                 <FollowBtn>팔로잉 {user?.following.length}명</FollowBtn>
-                <Link to="/profile/edit">
-                  <EditProfileBtn>프로필 수정</EditProfileBtn>
-                </Link>
                 <Link to="/exhibition/open">
-                  <EditProfileBtn>전시회 열기</EditProfileBtn>
+                  <OpenExhibitionBtn>전시회 열기</OpenExhibitionBtn>
                 </Link>
               </>
             ) : (
@@ -167,7 +173,19 @@ const FollowBtn = styled(ProfileBtn)`
   background-color: #2abce7;
   color: white;
 `;
-const EditProfileBtn = styled(ProfileBtn)`
+const OpenExhibitionBtn = styled(ProfileBtn)`
   background-color: ${(props) => props.theme.colors.point};
   color: white;
+`;
+const EditProfileBtn = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background-color: black;
+  &:hover {
+    opacity: 0.2;
+  }
 `;

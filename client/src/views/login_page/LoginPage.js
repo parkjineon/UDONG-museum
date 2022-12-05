@@ -27,7 +27,6 @@ function LoginPage() {
     };
     login(data, {
       onSuccess: (res) => {
-        console.log(res);
         if (res.data.loginSuccess) {
           dispatch(userActions.login());
           navigate("/");

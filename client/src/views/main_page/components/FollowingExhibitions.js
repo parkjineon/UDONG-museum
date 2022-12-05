@@ -13,9 +13,9 @@ function FollowingExhibitions() {
 
   return (
     <>
-      {exhibitions.length !== 0 ? (
+      {exhibitions?.length !== 0 ? (
         <>
-          {exhibitions.map((exhibition, idx) => (
+          {exhibitions?.map((exhibition, idx) => (
             <ExhibitionCard exhibition={exhibition} key={idx} />
           ))}
         </>

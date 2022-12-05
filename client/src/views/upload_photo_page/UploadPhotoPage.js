@@ -11,6 +11,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import * as S from "../../components/uploadForm/UploadForm_Style";
 
 function UploadPhotoPage({ isUpload }) {
   const navigate = useNavigate();
@@ -83,12 +84,12 @@ function UploadPhotoPage({ isUpload }) {
   };
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <PhotoFormContainer>
+      <S.UploadFormContainer>
         <form onSubmit={handleSubmit(onFormSubmit)}>
           <div style={{ fontSize: "30px" }}>
             {isUpload ? <>사진 등록하기</> : <>사진 수정하기</>}
           </div>
-          <UploadFormInputs>
+          <S.UploadFormInputs>
             <label htmlFor="photo">
               <UploadPhotoInput>
                 <IoIosAddCircleOutline size={50} />
@@ -103,30 +104,36 @@ function UploadPhotoPage({ isUpload }) {
                 // required: "Photo is required",
               })}
             />
-            <UploadInfoInput>
-              <FormLabel htmlFor="title">제목</FormLabel>
-              <TitleInput
-                type="text"
-                id="title"
-                {...register("title", {
-                  required: "Title is required",
-                })}
-                isError={errors.title}
-              />
-              <FormLabel htmlFor="date">날짜</FormLabel>
-              <DateInput
-                type="date"
-                id="date"
-                {...register("date")}
-              ></DateInput>
-              <FormLabel htmlFor="description">설명</FormLabel>
-              <DescriptionInput
-                type="text"
-                id="description"
-                {...register("description")}
-              />
-            </UploadInfoInput>
-          </UploadFormInputs>
+            <S.UploadInfoInputContainer>
+              <S.InfoInput>
+                <S.FormLabel htmlFor="title">제목</S.FormLabel>
+                <S.TitleInput
+                  type="text"
+                  id="title"
+                  {...register("title", {
+                    required: "Title is required",
+                  })}
+                  isError={errors.title}
+                />
+              </S.InfoInput>
+              <S.InfoInput>
+                <S.FormLabel htmlFor="date">날짜</S.FormLabel>
+                <S.DateInput
+                  type="date"
+                  id="date"
+                  {...register("date")}
+                ></S.DateInput>
+              </S.InfoInput>
+              <S.InfoInput>
+                <S.FormLabel htmlFor="description">설명</S.FormLabel>
+                <S.DescriptionInput
+                  type="text"
+                  id="description"
+                  {...register("description")}
+                />
+              </S.InfoInput>
+            </S.UploadInfoInputContainer>
+          </S.UploadFormInputs>
           <div
             style={{ width: "100%", display: "flex", justifyContent: "right" }}
           >
@@ -140,22 +147,14 @@ function UploadPhotoPage({ isUpload }) {
             </FormSubmitBtn>
           </div>
         </form>
-      </PhotoFormContainer>
+      </S.UploadFormContainer>
     </div>
   );
 }
 export default UploadPhotoPage;
 
-const PhotoFormContainer = styled.div`
-  margin-top: 20px;
-  width: 1000px;
-`;
-
 const UploadForm = styled.form``;
-const UploadFormInputs = styled.div`
-  display: flex;
-  margin-top: 20px;
-`;
+
 const UploadPhotoInput = styled.div`
   width: 300px;
   height: 300px;
@@ -168,57 +167,9 @@ const UploadPhotoInput = styled.div`
     color: gray;
     cursor: pointer;
   }
+  margin-right: 50px;
 `;
-const UploadInfoInput = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 50px;
-  font-size: 20px;
-  flex-grow: 1;
-`;
-const FormLabel = styled.label``;
-const TitleInput = styled.input`
-  margin-top: 10px;
-  background-color: #f2f6f9;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  &:focus {
-    outline: none;
-  }
-  font-family: "Noto Sans KR", sans-serif;
-  ${(props) =>
-    props.isError &&
-    css`
-      border: 1px solid ${(props) => props.theme.colors.error};
-    `}
-  margin-bottom:10px;
-`;
-const DescriptionInput = styled.textarea`
-  margin-top: 10px;
-  background-color: #f2f6f9;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  &:focus {
-    outline: none;
-  }
-  resize: none;
-  flex-grow: 1;
-  font-family: "Noto Sans KR", sans-serif;
-`;
-const DateInput = styled.input`
-  background-color: #f2f6f9;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-  padding: 5px;
-  margin-top: 10px;
-  font-family: "Noto Sans KR", sans-serif;
-  margin-bottom: 10px;
-  width: 30%;
-`;
+
 const Button = styled.button`
   display: flex;
   justify-content: center;
