@@ -11,7 +11,7 @@ export const PhotoContainer = styled.div`
   width: 320px;
   height: 320px;
   position: relative;
-  background-color: #c8c8c8;
+  background-color: beige;
   flex-shrink: 0;
   margin-bottom: 20px;
   &:hover {
@@ -36,5 +36,5 @@ export const PhotoCover = styled.div`
     `}
 `;
 export const PhotoImg = styled.div`
-  color: beige;
+  color: gray;
 `;

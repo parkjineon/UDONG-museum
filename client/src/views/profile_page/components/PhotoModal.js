@@ -131,7 +131,7 @@ const PhotoContainer = styled.div`
   flex-shrink: 0;
   width: 60%;
   height: 100%;
-  background-color: beige;
+  background-color: #f2f6f9;
 `;
 const PhotoInfoContainer = styled.div`
   display: flex;

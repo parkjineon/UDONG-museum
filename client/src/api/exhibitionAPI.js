@@ -2,7 +2,9 @@ import axios from "axios";
 
 const GET_NEAR = async (data) => {
   try {
-    const response = await axios.get("/api/exhibitions/near", { params: data });
+    const response = await axios.get("/api/exhibitions/near", {
+      params: data,
+    });
     return response;
   } catch (err) {
     console.log(err);
@@ -39,7 +41,18 @@ const CREATE_EXHIBITION = async (data) => {
 };
 const deleteExhibition = () => {};
 const editExhibition = () => {};
-const getExhibition = () => {};
+const GET_EXHIBITION = async (eid) => {
+  try {
+    const response = await axios.get(`/api/exhibitions/${eid}`);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {
+      ok: false,
+      message: err.message,
+    };
+  }
+};
 
 export {
   GET_NEAR,
@@ -47,5 +60,5 @@ export {
   CREATE_EXHIBITION,
   deleteExhibition,
   editExhibition,
-  getExhibition,
+  GET_EXHIBITION,
 };

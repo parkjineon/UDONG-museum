@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 function FollowingModal() {
+    
   useEffect(() => {
     document.body.style.cssText = `
               position: fixed; 

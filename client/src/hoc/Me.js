@@ -17,29 +17,21 @@ const Me = ({ children }) => {
       dispatch(userActions.me(data.data));
     },
   });
-  useEffect(() => {
-    if (!isCoordsReady) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        const location = {
-          latitude,
-          longitude,
-        };
-        dispatch(userActions.setLocation(location));
-        setIsCoordsReady(true);
-      });
-    }
-  });
+  // useEffect(() => {
+  //   if (!isCoordsReady) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       const latitude = position.coords.latitude;
+  //       const longitude = position.coords.longitude;
+  //       const location = {
+  //         latitude,
+  //         longitude,
+  //       };
+  //       dispatch(userActions.setLocation(location));
+  //       setIsCoordsReady(true);
+  //     });
+  //   }
+  // });
 
-  return isLoggedIn ? (
-    isFetched && isCoordsReady ? (
-      children
-    ) : (
-      <>loading page</>
-    )
-  ) : (
-    children
-  );
+  return isLoggedIn ? isFetched ? children : <>loading page</> : children;
 };
 export default Me;

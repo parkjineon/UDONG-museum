@@ -32,7 +32,7 @@ function OpenExhibitionPage() {
   const onFormSubmit = () => {
     const { title, start_date, end_date, description } = getValues();
     const data = {
-      title,
+      name: title,
       startDate: start_date,
       endDate: end_date,
       description,

@@ -59,6 +59,7 @@ function ProfilePage() {
       },
     }
   );
+
   const { mutate: follow } = useMutation(FOLLOW);
   const { mutate: unfollow } = useMutation(UNFOLLOW);
   const toggleFollow = () => {
