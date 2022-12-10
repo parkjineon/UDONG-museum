@@ -78,7 +78,7 @@ const SideMenuContent = styled.div`
   align-items: center;
 `;
 const SideMenuTitle = styled.div`
-  color: ${(props) => props.theme.colors.description}
+  color: ${(props) => props.theme.colors.description};
   font-size: ${(props) => props.theme.fontSizes.subtitle};
 `;
 const SideMenu = styled.div`

@@ -11,7 +11,7 @@ import MapCard from "./MapModal";
 
 function KakaoMap({ setIsModalOpen }) {
   const container = useRef(null);
-  const location = useSelector((state) => state.map.location);
+  const location = useSelector((state) => state.user.location);
   const exhibitions = useSelector((state) => state.exhibition.near);
   const hoveredEID = useSelector((state) => state.exhibition.hoveredEID);
   const dispatch = useDispatch();
@@ -27,6 +27,7 @@ function KakaoMap({ setIsModalOpen }) {
     new kakao.maps.Size(45, 45),
     new kakao.maps.Point(13, 34)
   );
+
   useEffect(() => {
     // default coords
     // let latitude = 37.5666805;

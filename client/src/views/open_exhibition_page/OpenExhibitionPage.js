@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import { useMutation, useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
@@ -8,15 +7,18 @@ import { CREATE_EXHIBITION } from "../../api/exhibitionAPI";
 import { PHOTO_LISTUP } from "../../api/photoAPI";
 import * as S from "../../components/uploadForm/UploadForm_Style";
 import * as D from "../../components/feed/Feed_Style";
+import * as F from "../../components/feed/Feed_Style";
 import { BsCheckCircleFill, BsCheckCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import SideMap from "./components/SideMap";
 
 function OpenExhibitionPage() {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [uploads, setUploads] = useState([]);
+  const [place, setPlace] = useState("");
   const { mutate: open } = useMutation(CREATE_EXHIBITION);
-  const { register, handleSubmit, getValues } = useForm();
+  const { register, handleSubmit, getValues, reset } = useForm();
   let { id: uid } = useSelector((state) => state.user.user);
   const { data: photo_listup_data } = useQuery(
     ["photo_listup", uid],
@@ -29,6 +31,7 @@ function OpenExhibitionPage() {
       },
     }
   );
+
   const onFormSubmit = () => {
     const { title, start_date, end_date, description } = getValues();
     const data = {
@@ -37,6 +40,8 @@ function OpenExhibitionPage() {
       endDate: end_date,
       description,
       photos: uploads,
+      latitude: place.latitude,
+      longitude: place.longitude,
     };
     open(data, {
       onSuccess: (res) => {
@@ -73,7 +78,14 @@ function OpenExhibitionPage() {
                     })}
                   />
                 </S.InfoInput>
-
+                <S.InfoInput>
+                  <S.FormLabel htmlFor="place">장소</S.FormLabel>
+                  <PlaceAlert>
+                    {place === ""
+                      ? "지도에서 전시회를 열 장소를 선택해주세요"
+                      : "전시회 장소가 선택되었습니다"}
+                  </PlaceAlert>
+                </S.InfoInput>
                 <S.InfoInput>
                   <S.FormLabel htmlFor="start_date">시작일</S.FormLabel>
                   <S.DateInput
@@ -90,6 +102,7 @@ function OpenExhibitionPage() {
                     ></S.DateInput>
                   </S.InfoInput>
                 </S.InfoInput>
+
                 <S.InfoInput>
                   <S.FormLabel htmlFor="description">설명</S.FormLabel>
                   <S.DescriptionInput
@@ -99,7 +112,9 @@ function OpenExhibitionPage() {
                   />
                 </S.InfoInput>
               </S.UploadInfoInputContainer>
-              <MapContainer></MapContainer>
+              <MapContainer>
+                <SideMap setPlace={setPlace} />
+              </MapContainer>
             </S.UploadFormInputs>
             <D.FeedContainer>
               {photos.map(({ _id: pid, used, title }, index) => (
@@ -124,6 +139,9 @@ function OpenExhibitionPage() {
                   <D.PhotoImg>{title}</D.PhotoImg>
                 </D.PhotoContainer>
               ))}
+              {photos.length % 3 === 2 && (
+                <F.PhotoContainer filling={true}></F.PhotoContainer>
+              )}
             </D.FeedContainer>
             <div
               style={{
@@ -143,6 +161,10 @@ function OpenExhibitionPage() {
 
 export default OpenExhibitionPage;
 
+const PlaceAlert = styled.div`
+  font-size: 13px;
+  margin-top: 5px;
+`;
 const FormSubmitBtn = styled.button`
   display: flex;
   justify-content: center;
@@ -165,6 +187,8 @@ const MapContainer = styled.div`
   border-radius: 20px;
   background-color: #f2f6f9;
   margin-left: 50px;
+  overflow: hidden;
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.3);
 `;
 const CheckBtnContainer = styled.div`
   padding: 10px;

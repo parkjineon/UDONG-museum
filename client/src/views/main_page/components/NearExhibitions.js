@@ -5,6 +5,7 @@ import { GET_NEAR } from "../../../api/exhibitionAPI";
 import ExhibitionCard from "./ExhibitionCard";
 import { exhibitionActions } from "../../../store/exhibitionSlice";
 import { mapActions } from "../../../store/mapSlice";
+import { userActions } from "../../../store/userSlice";
 
 function NearExhibitions() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ function NearExhibitions() {
     locationPromise.then(function ({ latitude, longitude }) {
       target_area = makeTargetArea(latitude, longitude);
       refetch(target_area);
-      dispatch(mapActions.location({ latitude, longitude }));
+      dispatch(userActions.location({ latitude, longitude }));
     });
   }, []);
 
