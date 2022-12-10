@@ -10,7 +10,7 @@ import MapCard from "./MapModal";
 
 function KakaoMap({ setIsModalOpen }) {
   const container = useRef(null);
-  const location = useSelector((state) => state.user.location);
+  const location = useSelector((state) => state.map.location);
   const exhibitions = useSelector((state) => state.exhibition.near);
   const hoveredEID = useSelector((state) => state.exhibition.hoveredEID);
   const dispatch = useDispatch();
@@ -39,6 +39,8 @@ function KakaoMap({ setIsModalOpen }) {
       level: 6,
       scrollwheel: false,
       clickable: true,
+      disableDoubleClick: true,
+      disableDoubleClickZoom: true,
     };
     const map = new window.kakao.maps.Map(container.current, options);
 
@@ -54,12 +56,14 @@ function KakaoMap({ setIsModalOpen }) {
         image: exhibition._id === hoveredEID ? hoveredMarker : defaultMarker,
       });
       markers.push(marker);
-      kakao.maps.event.addListener(marker, "click", function (e) {
-        console.log(marker.getTitle());
+      kakao.maps.event.addListener(marker, "click", function () {
         dispatch(exhibitionActions.selectedEID(marker.getTitle()));
       });
+      // kakao.maps.event.addListener(map, "dragend", function () {
+      //   alert("center changed!");
+      // });
     });
-  }, [hoveredEID]);
+  }, [hoveredEID, exhibitions]);
 
   return <KakaoMapContainer ref={container}></KakaoMapContainer>;
 }

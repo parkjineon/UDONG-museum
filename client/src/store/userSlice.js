@@ -20,9 +20,6 @@ export const userSlice = createSlice({
       // my information
       state.user = action.payload;
     },
-    setLocation: (state, action) => {
-      state.location = action.payload;
-    },
   },
 });
 
