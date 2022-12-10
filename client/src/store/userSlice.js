@@ -17,6 +17,7 @@ export const userSlice = createSlice({
       state.user = {};
     },
     me: (state, action) => {
+      // my information
       state.user = action.payload;
     },
     setLocation: (state, action) => {

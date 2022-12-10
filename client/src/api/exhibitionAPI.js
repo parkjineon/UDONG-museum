@@ -42,6 +42,7 @@ const CREATE_EXHIBITION = async (data) => {
 const deleteExhibition = () => {};
 const editExhibition = () => {};
 const GET_EXHIBITION = async (eid) => {
+  console.log(eid);
   try {
     const response = await axios.get(`/api/exhibitions/${eid}`);
     return response;

@@ -16,6 +16,7 @@ import EditProfilePage from "./views/edit_profile_page/EditProfilePage";
 import PrivateRoute from "./hoc/PrivateRoute";
 import UploadPhotoPage from "./views/upload_photo_page/UploadPhotoPage";
 import OpenExhibitionPage from "./views/open_exhibition_page/OpenExhibitionPage";
+import ExhibitionPage from "./views/exhibition_page/ExhibitionPage";
 
 const PageContainer = styled.div`
   background-color: ${(props) => props.theme.colors.main};
@@ -99,6 +100,7 @@ function App() {
                       </PrivateRoute>
                     }
                   />
+                  <Route path="/exhibition/:eid" element={<ExhibitionPage />} />
                   <Route
                     path="/exhibition/open"
                     element={
