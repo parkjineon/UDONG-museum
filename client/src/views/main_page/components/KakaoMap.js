@@ -12,9 +12,20 @@ function KakaoMap({ setIsModalOpen }) {
   const container = useRef(null);
   const location = useSelector((state) => state.user.location);
   const exhibitions = useSelector((state) => state.exhibition.near);
+  const hoveredEID = useSelector((state) => state.exhibition.hoveredEID);
   const dispatch = useDispatch();
 
   let markers = [];
+  const defaultMarker = new kakao.maps.MarkerImage(
+    `${process.env.PUBLIC_URL}/image/marker2_blue.png`,
+    new kakao.maps.Size(45, 45),
+    new kakao.maps.Point(13, 34)
+  );
+  const hoveredMarker = new kakao.maps.MarkerImage(
+    `${process.env.PUBLIC_URL}/image/marker2_red.png`,
+    new kakao.maps.Size(45, 45),
+    new kakao.maps.Point(13, 34)
+  );
   useEffect(() => {
     // default coords
     // let latitude = 37.5666805;
@@ -40,6 +51,7 @@ function KakaoMap({ setIsModalOpen }) {
           exhibition.latitude,
           exhibition.longitude
         ),
+        image: exhibition._id === hoveredEID ? hoveredMarker : defaultMarker,
       });
       markers.push(marker);
       kakao.maps.event.addListener(marker, "click", function (e) {
@@ -47,7 +59,7 @@ function KakaoMap({ setIsModalOpen }) {
         dispatch(exhibitionActions.selectedEID(marker.getTitle()));
       });
     });
-  }, []);
+  }, [hoveredEID]);
 
   return <KakaoMapContainer ref={container}></KakaoMapContainer>;
 }

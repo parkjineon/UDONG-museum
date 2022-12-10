@@ -52,14 +52,24 @@ function NearExhibitions() {
 
   return (
     <>
-      {exhibitions?.length !== 0 ? (
-        <>
-          {exhibitions.map((exhibition, idx) => (
-            <ExhibitionCard exhibition={exhibition} key={idx} />
-          ))}
-        </>
+      {isLoading ? (
+        <>Loading...</>
       ) : (
-        <>No exhibition nearby!</>
+        <>
+          {exhibitions?.length !== 0 ? (
+            <>
+              {exhibitions.map((exhibition, idx) => (
+                <ExhibitionCard
+                  isNear={true}
+                  exhibition={exhibition}
+                  key={idx}
+                />
+              ))}
+            </>
+          ) : (
+            <>No exhibition nearby!</>
+          )}
+        </>
       )}
     </>
   );

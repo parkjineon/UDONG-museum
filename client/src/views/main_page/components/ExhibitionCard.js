@@ -1,18 +1,36 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { exhibitionActions } from "../../../store/exhibitionSlice";
 
-function ExhibitionCard({ exhibition }) {
+function ExhibitionCard({ isNear, exhibition }) {
+  const dispatch = useDispatch();
   // GET_USER > get profile photo
+  const onHoverOrClick = () => {
+    dispatch(exhibitionActions.hoveredEID(exhibition._id));
+  };
   return (
-    <Link to={`/exhibition/${exhibition._id}`}>
-      <CardContainer>
-        <ProfilePhoto></ProfilePhoto>
-        <ExhibitionInfo>
-          <ExhibitionTitle>{exhibition.name}</ExhibitionTitle>
-          <ExhibitionOwner>{exhibition.user}</ExhibitionOwner>
-        </ExhibitionInfo>
-      </CardContainer>
-    </Link>
+    <>
+      {isNear ? (
+        <CardContainer onMouseOver={onHoverOrClick}>
+          <ProfilePhoto></ProfilePhoto>
+          <ExhibitionInfo>
+            <ExhibitionTitle>{exhibition.name}</ExhibitionTitle>
+            <ExhibitionOwner>{exhibition.user}</ExhibitionOwner>
+          </ExhibitionInfo>
+        </CardContainer>
+      ) : (
+        <Link to={`/exhibition/${exhibition._id}`}>
+          <CardContainer>
+            <ProfilePhoto></ProfilePhoto>
+            <ExhibitionInfo>
+              <ExhibitionTitle>{exhibition.name}</ExhibitionTitle>
+              <ExhibitionOwner>{exhibition.user}</ExhibitionOwner>
+            </ExhibitionInfo>
+          </CardContainer>
+        </Link>
+      )}
+    </>
   );
 }
 export default ExhibitionCard;
@@ -23,6 +41,9 @@ const CardContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 5px 0px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const ProfilePhoto = styled.div`

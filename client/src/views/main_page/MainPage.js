@@ -107,6 +107,9 @@ const MapCover = styled.div`
     css`
       display: block;
     `}
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const MapContainer = styled.div`
   height: 100%;

@@ -4,6 +4,7 @@ const initialState = {
   near: [],
 
   selectedEID: "",
+  hoveredEID: "",
 };
 export const exhibitionSlice = createSlice({
   name: "exhibition",
@@ -16,6 +17,9 @@ export const exhibitionSlice = createSlice({
 
     selectedEID: (state, action) => {
       state.selectedEID = action.payload;
+    },
+    hoveredEID: (state, action) => {
+      state.hoveredEID = action.payload;
     },
   },
 });
