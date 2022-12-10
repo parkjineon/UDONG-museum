@@ -9,10 +9,7 @@ import { mapActions } from "../../../store/mapSlice";
 function NearExhibitions() {
   const dispatch = useDispatch();
   const [exhibitions, setExhibitions] = useState([]);
-  const [crntLocation, setCrntLocation] = useState({
-    latitude: "",
-    longitude: "",
-  });
+  const location = useSelector((state) => state.map.location);
 
   let target_area;
 
@@ -27,25 +24,30 @@ function NearExhibitions() {
       },
     }
   );
+  const makeTargetArea = (latitude, longitude) => {
+    target_area = {
+      maxLatitude: latitude + 0.01893173974,
+      minLatitude: latitude - 0.01893173974,
+      maxLongitude: longitude + 0.0398315272,
+      minLongitude: longitude - 0.0398315272,
+    };
+    return target_area;
+  };
+
   useEffect(() => {
     let latitude;
     let longitude;
+
     let locationPromise = new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition((position) => {
         latitude = position.coords.latitude;
         longitude = position.coords.longitude;
-
         resolve({ latitude, longitude });
       });
     });
+
     locationPromise.then(function ({ latitude, longitude }) {
-      // setCrntLocation({ latitude, longitude });
-      target_area = {
-        maxLatitude: latitude + 0.01893173974,
-        minLatitude: latitude - 0.01893173974,
-        maxLongitude: longitude + 0.0398315272,
-        minLongitude: longitude - 0.0398315272,
-      };
+      target_area = makeTargetArea(latitude, longitude);
       refetch(target_area);
       dispatch(mapActions.location({ latitude, longitude }));
     });

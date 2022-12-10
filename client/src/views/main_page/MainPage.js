@@ -25,8 +25,6 @@ function MainPage() {
       setIsModalOpen(false);
       dispatch(exhibitionActions.selectedEID(""));
     }
-
-    console.log(pointer.x, pointer.y);
   };
   return (
     <MainPageContainer>

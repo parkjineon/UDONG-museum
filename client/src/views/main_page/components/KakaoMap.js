@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { GET_EXHIBITION } from "../../../api/exhibitionAPI";
 import { exhibitionActions } from "../../../store/exhibitionSlice";
+import { mapActions } from "../../../store/mapSlice";
 import MapCard from "./MapModal";
 
 function KakaoMap({ setIsModalOpen }) {
@@ -59,9 +60,11 @@ function KakaoMap({ setIsModalOpen }) {
       kakao.maps.event.addListener(marker, "click", function () {
         dispatch(exhibitionActions.selectedEID(marker.getTitle()));
       });
-      // kakao.maps.event.addListener(map, "dragend", function () {
-      //   alert("center changed!");
-      // });
+      kakao.maps.event.addListener(map, "dragend", function () {
+        const new_latitude = map.getCenter().Ma;
+        const new_longitude = map.getCenter().La;
+        console.log(new_latitude, new_longitude);
+      });
     });
   }, [hoveredEID, exhibitions]);
 

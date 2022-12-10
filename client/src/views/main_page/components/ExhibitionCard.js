@@ -12,7 +12,7 @@ function ExhibitionCard({ isNear, exhibition }) {
   return (
     <>
       {isNear ? (
-        <CardContainer onMouseOver={onHoverOrClick}>
+        <CardContainer onClick={onHoverOrClick}>
           <ProfilePhoto></ProfilePhoto>
           <ExhibitionInfo>
             <ExhibitionTitle>{exhibition.name}</ExhibitionTitle>
