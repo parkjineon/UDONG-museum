@@ -10,7 +10,7 @@ import { userActions } from "../../../store/userSlice";
 function NearExhibitions() {
   const dispatch = useDispatch();
   const [exhibitions, setExhibitions] = useState([]);
-  const location = useSelector((state) => state.map.location);
+  const mapLocation = useSelector((state) => state.map.location);
 
   let target_area;
 
@@ -38,21 +38,38 @@ function NearExhibitions() {
   useEffect(() => {
     let latitude;
     let longitude;
-
-    let locationPromise = new Promise(function (resolve, reject) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-        resolve({ latitude, longitude });
+    if (Object.keys(mapLocation).length == 0) {
+      let locationPromise = new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
+          resolve({ latitude, longitude });
+        });
       });
-    });
 
-    locationPromise.then(function ({ latitude, longitude }) {
-      target_area = makeTargetArea(latitude, longitude);
+      locationPromise.then(function ({ latitude, longitude }) {
+        target_area = makeTargetArea(latitude, longitude);
+        refetch(target_area);
+        dispatch(userActions.location({ latitude, longitude }));
+      });
+    } else {
+      target_area = makeTargetArea(mapLocation.latitude, mapLocation.longitude);
       refetch(target_area);
-      dispatch(userActions.location({ latitude, longitude }));
-    });
-  }, []);
+    }
+    // let locationPromise = new Promise(function (resolve, reject) {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     latitude = position.coords.latitude;
+    //     longitude = position.coords.longitude;
+    //     resolve({ latitude, longitude });
+    //   });
+    // });
+
+    // locationPromise.then(function ({ latitude, longitude }) {
+    //   target_area = makeTargetArea(latitude, longitude);
+    //   refetch(target_area);
+    //   dispatch(userActions.location({ latitude, longitude }));
+    // });
+  }, [mapLocation]);
 
   return (
     <>

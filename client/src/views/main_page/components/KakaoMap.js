@@ -12,30 +12,35 @@ import MapCard from "./MapModal";
 function KakaoMap({ setIsModalOpen }) {
   const container = useRef(null);
   const location = useSelector((state) => state.user.location);
+  const mapLocation = useSelector((state) => state.map.location);
   const exhibitions = useSelector((state) => state.exhibition.near);
   const hoveredEID = useSelector((state) => state.exhibition.hoveredEID);
   const dispatch = useDispatch();
 
   let markers = [];
+
   const defaultMarker = new kakao.maps.MarkerImage(
-    `${process.env.PUBLIC_URL}/image/marker2_blue.png`,
-    new kakao.maps.Size(45, 45),
+    `${process.env.PUBLIC_URL}/image/marker1_black.png`,
+    new kakao.maps.Size(40, 45),
     new kakao.maps.Point(13, 34)
   );
   const hoveredMarker = new kakao.maps.MarkerImage(
-    `${process.env.PUBLIC_URL}/image/marker2_red.png`,
-    new kakao.maps.Size(45, 45),
+    `${process.env.PUBLIC_URL}/image/marker1_red.png`,
+    new kakao.maps.Size(40, 45),
     new kakao.maps.Point(13, 34)
   );
 
   useEffect(() => {
     // default coords
-    // let latitude = 37.5666805;
-    // let longitude = 126.9784147;
-
-    let latitude = location?.latitude;
-    let longitude = location?.longitude;
-
+    let latitude;
+    let longitude;
+    if (Object.keys(mapLocation) == 0) {
+      latitude = location?.latitude;
+      longitude = location?.longitude;
+    } else {
+      latitude = mapLocation.latitude;
+      longitude = mapLocation.longitude;
+    }
     const options = {
       center: new window.kakao.maps.LatLng(latitude, longitude),
       level: 6,
@@ -44,7 +49,7 @@ function KakaoMap({ setIsModalOpen }) {
       disableDoubleClick: true,
       disableDoubleClickZoom: true,
     };
-    const map = new window.kakao.maps.Map(container.current, options);
+    const map = new window.kakao.maps.Map(container?.current, options);
 
     exhibitions?.forEach((exhibition) => {
       const marker = new kakao.maps.Marker({
@@ -61,10 +66,15 @@ function KakaoMap({ setIsModalOpen }) {
       kakao.maps.event.addListener(marker, "click", function () {
         dispatch(exhibitionActions.selectedEID(marker.getTitle()));
       });
-      kakao.maps.event.addListener(map, "dragend", function () {
+      kakao.maps.event.addListener(map, "idle", function () {
         const new_latitude = map.getCenter().Ma;
         const new_longitude = map.getCenter().La;
-        console.log(new_latitude, new_longitude);
+        dispatch(
+          mapActions.location({
+            latitude: new_latitude,
+            longitude: new_longitude,
+          })
+        );
       });
     });
   }, [hoveredEID, exhibitions]);

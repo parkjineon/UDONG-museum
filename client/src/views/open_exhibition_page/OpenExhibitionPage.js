@@ -65,7 +65,10 @@ function OpenExhibitionPage() {
       <S.UploadFormContainer>
         <S.UploadInfoInputContainer>
           <form onSubmit={handleSubmit(onFormSubmit)}>
-            <div style={{ fontSize: "30px" }}>전시회 열기</div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ fontSize: "30px" }}>전시회 열기</div>
+              <FormSubmitBtn>등록하기</FormSubmitBtn>
+            </div>
             <S.UploadFormInputs style={{ marginBottom: "50px" }}>
               <S.UploadInfoInputContainer>
                 <S.InfoInput>
@@ -143,15 +146,6 @@ function OpenExhibitionPage() {
                 <F.PhotoContainer filling={true}></F.PhotoContainer>
               )}
             </D.FeedContainer>
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "right",
-              }}
-            >
-              <FormSubmitBtn>등록하기</FormSubmitBtn>
-            </div>
           </form>
         </S.UploadInfoInputContainer>
       </S.UploadFormContainer>

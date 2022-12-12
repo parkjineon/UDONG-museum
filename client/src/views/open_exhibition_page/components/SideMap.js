@@ -8,8 +8,8 @@ function SideMap({ setPlace }) {
   const container = useRef(null);
   const location = useSelector((state) => state.user.location);
   const markerImage = new kakao.maps.MarkerImage(
-    `${process.env.PUBLIC_URL}/image/marker2_red.png`,
-    new kakao.maps.Size(45, 45),
+    `${process.env.PUBLIC_URL}/image/marker1_red.png`,
+    new kakao.maps.Size(40, 45),
     new kakao.maps.Point(13, 34)
   );
   let marker = new kakao.maps.Marker({});

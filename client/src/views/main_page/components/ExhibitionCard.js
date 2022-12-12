@@ -36,7 +36,7 @@ function ExhibitionCard({ isNear, exhibition }) {
 export default ExhibitionCard;
 
 const CardContainer = styled.div`
-  width: 250px;
+  width: 260px;
   display: flex;
   justify-content: space-between;
   align-items: center;
