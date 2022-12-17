@@ -18,6 +18,7 @@ function KakaoMap({ setIsModalOpen }) {
   const dispatch = useDispatch();
 
   let markers = [];
+  let map;
 
   const defaultMarker = new kakao.maps.MarkerImage(
     `${process.env.PUBLIC_URL}/image/marker1_black.png`,
@@ -49,13 +50,13 @@ function KakaoMap({ setIsModalOpen }) {
       disableDoubleClick: true,
       disableDoubleClickZoom: true,
     };
-    const map = new window.kakao.maps.Map(container?.current, options);
+    map = new window.kakao.maps.Map(container?.current, options);
+    // suggestions : map rendering should be separated from marker rendering
 
     exhibitions?.forEach((exhibition) => {
       const marker = new kakao.maps.Marker({
         map,
         title: exhibition._id,
-        // id: exhibition._id,
         position: new kakao.maps.LatLng(
           exhibition.latitude,
           exhibition.longitude
@@ -66,16 +67,18 @@ function KakaoMap({ setIsModalOpen }) {
       kakao.maps.event.addListener(marker, "click", function () {
         dispatch(exhibitionActions.selectedEID(marker.getTitle()));
       });
-      kakao.maps.event.addListener(map, "idle", function () {
-        const new_latitude = map.getCenter().Ma;
-        const new_longitude = map.getCenter().La;
-        dispatch(
-          mapActions.location({
-            latitude: new_latitude,
-            longitude: new_longitude,
-          })
-        );
-      });
+    });
+
+    kakao.maps.event.addListener(map, "idle", function () {
+      // on map center changed
+      const new_latitude = map.getCenter().Ma;
+      const new_longitude = map.getCenter().La;
+      dispatch(
+        mapActions.location({
+          latitude: new_latitude,
+          longitude: new_longitude,
+        })
+      );
     });
   }, [hoveredEID, exhibitions]);
 
