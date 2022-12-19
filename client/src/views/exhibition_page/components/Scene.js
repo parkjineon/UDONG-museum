@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Center, Html, OrbitControls, Text } from "@react-three/drei";
+import { OrbitControls, Text, Image } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import styled from "styled-components";
@@ -10,16 +10,16 @@ function Cylinder() {
   useFrame((state) => {});
   return (
     <mesh ref={cylinderRef}>
-      <cylinderBufferGeometry attach="geometry" args={[2, 2, 3, 20]} />
-      <meshBasicMaterial attach="material" color="beige" />
+      <cylinderGeometry attach="geometry" args={[2, 2, 3, 20]} />
+      <meshBasicMaterial attach="material" color="#C5BB9A" />
     </mesh>
   );
 }
 function Frame({ index, setDesc }) {
-  const theta = (Math.PI / 7) * (index + 1);
+  const theta = (Math.PI / 8) * (index + 1);
   const onFrameHover = (e) => {
     const mesh = e.eventObject;
-    mesh.scale.set(1.03, 1.03);
+    mesh.scale.set(1.04, 1.04);
   };
   const onFrameOut = (e) => {
     const mesh = e.eventObject;
@@ -27,7 +27,6 @@ function Frame({ index, setDesc }) {
   };
   const onFrameClick = (e) => {
     setDesc(e.eventObject.index);
-    console.log(e);
   };
   return (
     <>
@@ -35,23 +34,31 @@ function Frame({ index, setDesc }) {
         position={[Math.sin(theta) * 5, 0, Math.cos(theta) * 5]}
         rotation={[0, theta, 0]}
         onClick={onFrameClick}
-        onPointerOver={onFrameHover}
-        onPointerOut={onFrameOut}
+        // onPointerOver={onFrameHover}
+        // onPointerOut={onFrameOut}
         index={index}
       >
-        <planeGeometry args={[1, 1]} />
+        <planeGeometry args={[1.04, 1.04]} />
         <meshBasicMaterial
           attach="material"
           side={THREE.DoubleSide}
-          color="black"
+          color="beige"
         />
+      </mesh>
+      <mesh
+        position={[Math.sin(theta) * 5.001, 0, Math.cos(theta) * 5.001]}
+        rotation={[0, theta, 0]}
+        onPointerOver={onFrameHover}
+        onPointerOut={onFrameOut}
+      >
+        <Image url={`${process.env.PUBLIC_URL}/image/sample_photo.jpeg`} />
       </mesh>
       <mesh
         position={[Math.sin(theta) * 5, 0, Math.cos(theta) * 5]}
         rotation={[0, theta, 0]}
       >
         <Text
-          position={[0.4, -0.55, 0.1]}
+          position={[0.4, -0.6, 0.1]}
           color="black"
           fontSize={0.07}
           anchorX="right"
@@ -60,7 +67,7 @@ function Frame({ index, setDesc }) {
         </Text>
 
         <Text
-          position={[0.4, -0.6, 0.1]}
+          position={[0.4, -0.65, 0.1]}
           color="#B3B3B3"
           fontSize={0.03}
           anchorX="right"

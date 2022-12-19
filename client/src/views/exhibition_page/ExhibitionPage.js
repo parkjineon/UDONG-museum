@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { Link, useParams } from "react-router-dom";
+import styled, { css } from "styled-components";
 import { GET_EXHIBITION } from "../../api/exhibitionAPI";
 import Scene from "./components/Scene";
 
@@ -17,17 +17,15 @@ function ExhibitionPage() {
     () => GET_EXHIBITION(eid),
     {
       onSuccess: (res) => {
-        if (res.info.getExhibitionInfoSuccess) {
+        if (res.data.getExhibitionInfoSuccess) {
           setExhibition(res.data.info);
+          console.log(res.data.info);
         }
       },
     }
   );
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
   return (
     <ExhibitionPageContainer>
@@ -48,32 +46,114 @@ function ExhibitionPage() {
           )}
         </Description>
       </DescriptionContainer>
-      <InfoContainer onClick={openModal}>
-        <UserImg src={`${process.env.PUBLIC_URL}/image/user.png`} />
+      <InfoContainer>
+        <div>
+          <UserImg
+            onClick={toggleModal}
+            src={`${process.env.PUBLIC_URL}/image/user.png`}
+          ></UserImg>
+        </div>
+        <ClickMe isModalOpen={isModalOpen}>Click me!</ClickMe>
+        <UserInfo isModalOpen={isModalOpen}>
+          <ExhibitionName>{exhibition?.name}</ExhibitionName>
+          <div>{exhibition?.description}</div>
+          <Link to={`/${exhibition?.user}`}>
+            <Username>작가 {exhibition?.user}</Username>
+          </Link>
+        </UserInfo>
       </InfoContainer>
+      <PageCover isModalOpen={isModalOpen}></PageCover>
     </ExhibitionPageContainer>
   );
 }
 
 export default ExhibitionPage;
 
+const PageCover = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.4;
+  display: none;
+  ${(props) =>
+    props.isModalOpen &&
+    css`
+      display: block;
+    `}
+`;
+const ClickMe = styled.div`
+  position: relative;
+  color: #e0e0e0;
+  /* color: hotpink; */
+  left: 180px;
+  bottom: 10px;
+  ${(props) =>
+    props.isModalOpen &&
+    css`
+      &::after {
+        content: " (again)";
+      }
+    `}
+`;
+const ExhibitionName = styled.div`
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+const Username = styled.div`
+  width: 100%;
+  text-align: right;
+  margin-top: 20px;
+  color: #b3b3b3;
+  &:hover {
+    color: black;
+    cursor: pointer;
+  }
+`;
+const UserInfo = styled.div`
+  position: absolute;
+  bottom: 380px;
+  width: 500px;
+  padding: 30px 30px;
+  background-color: white;
+  display: none;
+  ${(props) =>
+    props.isModalOpen &&
+    css`
+      display: block;
+    `}
+  border-radius:20px;
+  &::after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 24px solid white;
+    border-right: 12px solid transparent;
+    border-top: 12px solid white;
+    border-bottom: 20px solid transparent;
+    right: 30%;
+    bottom: -24px;
+  }
+`;
+
 const UserImg = styled.img`
   transform: scale(1.2);
   &:hover {
     cursor: pointer;
-    /* transform: scale(1.1); */
   }
 `;
+
 const InfoContainer = styled.div`
   position: absolute;
-  bottom: 90px;
+  bottom: 0px;
   left: 100px;
   z-index: 280;
 `;
 const Description = styled.div`
   padding: 10px;
-  /* height: 100px; */
-  /* overflow-y: scroll; */
   transform: rotateX(40deg);
 `;
 const DescriptionContainer = styled.div`
