@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { GET_EXHIBITION } from "../../api/exhibitionAPI";
@@ -12,6 +13,8 @@ function ExhibitionPage() {
   const [exhibition, setExhibition] = useState();
   const [desc, setDesc] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMe, setIsMe] = useState(false);
+  let me = useSelector((state) => state.user.user);
   const { data, refetch } = useQuery(
     ["get_exhibition", eid],
     () => GET_EXHIBITION(eid),
@@ -19,7 +22,7 @@ function ExhibitionPage() {
       onSuccess: (res) => {
         if (res.data.getExhibitionInfoSuccess) {
           setExhibition(res.data.info);
-          console.log(res.data.info);
+          setIsMe(res.data.info.user === me.id);
         }
       },
     }
@@ -60,6 +63,11 @@ function ExhibitionPage() {
           <Link to={`/${exhibition?.user}`}>
             <Username>작가 {exhibition?.user}</Username>
           </Link>
+          {isMe && (
+            <Link to={`edit`}>
+              <EditBtn>수정</EditBtn>
+            </Link>
+          )}
         </UserInfo>
       </InfoContainer>
       <PageCover isModalOpen={isModalOpen}></PageCover>
@@ -82,6 +90,16 @@ const PageCover = styled.div`
     css`
       display: block;
     `}
+`;
+const EditBtn = styled.div`
+  width: 100%;
+  text-align: right;
+  color: #e64e4e;
+  /* padding-top: 10px; */
+  &:hover {
+    font-weight: bold;
+    cursor: pointer;
+  }
 `;
 const ClickMe = styled.div`
   position: relative;

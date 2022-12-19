@@ -3,23 +3,53 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
-import { CREATE_EXHIBITION } from "../../api/exhibitionAPI";
+import {
+  CREATE_EXHIBITION,
+  EDIT_EXHIBITION,
+  GET_EXHIBITION,
+} from "../../api/exhibitionAPI";
 import { PHOTO_LISTUP } from "../../api/photoAPI";
 import * as S from "../../components/uploadForm/UploadForm_Style";
 import * as D from "../../components/feed/Feed_Style";
 import * as F from "../../components/feed/Feed_Style";
 import { BsCheckCircleFill, BsCheckCircle } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SideMap from "./components/SideMap";
+import moment from "moment";
 
-function OpenExhibitionPage() {
+function OpenExhibitionPage({ isUpload }) {
   const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
   const [uploads, setUploads] = useState([]);
   const [place, setPlace] = useState("");
   const { mutate: open } = useMutation(CREATE_EXHIBITION);
+  const { mutate: edit } = useMutation(EDIT_EXHIBITION);
   const { register, handleSubmit, getValues, reset } = useForm();
   let { id: uid } = useSelector((state) => state.user.user);
+  const { eid } = useParams();
+
+  // if exhibition edit page
+  const { data } = useQuery(
+    ["get_exhibition", eid],
+    () => GET_EXHIBITION(eid),
+    {
+      onSuccess: (data) => {
+        reset({
+          // set default form value
+          title: data.data.info?.name,
+          description: data.data.info?.description,
+          start_date: moment(data.data.info?.startDate).format("yyyy-MM-DD"),
+          end_date: moment(data.data.info?.endDate).format("yyyy-MM-DD"),
+        });
+        setUploads(data.data.info?.photos);
+        setPlace({
+          latitude: data.data.info?.latitude,
+          longitude: data.data.info?.longitude,
+        });
+      },
+    }
+  );
+
   const { data: photo_listup_data } = useQuery(
     ["photo_listup", uid],
     () => PHOTO_LISTUP(uid),
@@ -43,13 +73,29 @@ function OpenExhibitionPage() {
       latitude: place.latitude,
       longitude: place.longitude,
     };
-    open(data, {
-      onSuccess: (res) => {
-        if (res.data.registerExhibitionSuccess) {
-          navigate(`/${uid}`);
+    if (isUpload) {
+      // open exhibition
+      open(data, {
+        onSuccess: (res) => {
+          if (res.data.registerExhibitionSuccess) {
+            navigate(`/${uid}`);
+          }
+        },
+      });
+    } else {
+      // edit exhibition
+      edit(
+        { eid, data },
+        {
+          onSuccess: (res) => {
+            console.log(res);
+            if (res.data.editExhibitionInfoSuccess) {
+              navigate(`/exhibition/${eid}`);
+            }
+          },
         }
-      },
-    });
+      );
+    }
   };
   const toggleCheck = (pid, used) => {
     if (!used) {
@@ -67,7 +113,9 @@ function OpenExhibitionPage() {
           <form onSubmit={handleSubmit(onFormSubmit)}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div style={{ fontSize: "30px" }}>전시회 열기</div>
-              <FormSubmitBtn>등록하기</FormSubmitBtn>
+              <FormSubmitBtn>
+                {isUpload ? <>등록하기</> : <>수정하기</>}
+              </FormSubmitBtn>
             </div>
             <S.UploadFormInputs style={{ marginBottom: "50px" }}>
               <S.UploadInfoInputContainer>
@@ -116,7 +164,7 @@ function OpenExhibitionPage() {
                 </S.InfoInput>
               </S.UploadInfoInputContainer>
               <MapContainer>
-                <SideMap setPlace={setPlace} />
+                <SideMap place={place} setPlace={setPlace} />
               </MapContainer>
             </S.UploadFormInputs>
             <D.FeedContainer>

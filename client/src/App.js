@@ -109,6 +109,10 @@ function App() {
                       </PrivateRoute>
                     }
                   />
+                  <Route
+                    path="/exhibition/:eid/edit"
+                    element={<OpenExhibitionPage isUpload={false} />}
+                  />
                 </Routes>
               </PageContainer>
             </div>

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-function SideMap({ setPlace }) {
+function SideMap({ setPlace, place }) {
   const container = useRef(null);
   const location = useSelector((state) => state.user.location);
   const markerImage = new kakao.maps.MarkerImage(
@@ -13,6 +13,7 @@ function SideMap({ setPlace }) {
     new kakao.maps.Point(13, 34)
   );
   let marker = new kakao.maps.Marker({});
+
   useEffect(() => {
     const options = {
       center: new window.kakao.maps.LatLng(
@@ -26,7 +27,13 @@ function SideMap({ setPlace }) {
       disableDoubleClickZoom: true,
     };
     const map = new window.kakao.maps.Map(container.current, options);
-
+    marker = new kakao.maps.Marker({
+      image: markerImage,
+      position: new kakao.maps.LatLng(place.latitude, place.longitude),
+    });
+    if (place !== "") {
+      marker.setMap(map);
+    }
     kakao.maps.event.addListener(map, "click", function (e) {
       marker.setMap(null);
       marker = new kakao.maps.Marker({
@@ -36,7 +43,7 @@ function SideMap({ setPlace }) {
       marker.setMap(map);
       setPlace({ latitude: e.latLng.Ma, longitude: e.latLng.La });
     });
-  }, []);
+  }, [place]);
 
   return <KakaoMapContainer ref={container}></KakaoMapContainer>;
 }
