@@ -105,7 +105,7 @@ function App() {
                     path="/exhibition/open"
                     element={
                       <PrivateRoute>
-                        <OpenExhibitionPage />
+                        <OpenExhibitionPage isUpload={true} />
                       </PrivateRoute>
                     }
                   />

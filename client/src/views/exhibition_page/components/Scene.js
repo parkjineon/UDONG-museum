@@ -84,7 +84,7 @@ function Scene({ setDesc }) {
     <CanvasContainer>
       <Canvas
         camera={{
-          position: [0, 3, 3],
+          position: [0, 4, 4],
           fov: 75,
           near: 0.1,
           far: 100,

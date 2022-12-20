@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 import {
   CREATE_EXHIBITION,
+  DELETE_EXHIBITION,
   EDIT_EXHIBITION,
   GET_EXHIBITION,
 } from "../../api/exhibitionAPI";
@@ -24,6 +25,7 @@ function OpenExhibitionPage({ isUpload }) {
   const [place, setPlace] = useState("");
   const { mutate: open } = useMutation(CREATE_EXHIBITION);
   const { mutate: edit } = useMutation(EDIT_EXHIBITION);
+  const { mutate: del } = useMutation(DELETE_EXHIBITION);
   const { register, handleSubmit, getValues, reset } = useForm();
   let { id: uid } = useSelector((state) => state.user.user);
   const { eid } = useParams();
@@ -61,7 +63,15 @@ function OpenExhibitionPage({ isUpload }) {
       },
     }
   );
-
+  const onDeleteClick = () => {
+    del(eid, {
+      onSuccess: (res) => {
+        if (res.data.deleteExhibitionSuccess) {
+          navigate(`/${uid}`);
+        }
+      },
+    });
+  };
   const onFormSubmit = () => {
     const { title, start_date, end_date, description } = getValues();
     const data = {
@@ -106,6 +116,7 @@ function OpenExhibitionPage({ isUpload }) {
       }
     }
   };
+
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
       <S.UploadFormContainer>
@@ -113,9 +124,19 @@ function OpenExhibitionPage({ isUpload }) {
           <form onSubmit={handleSubmit(onFormSubmit)}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div style={{ fontSize: "30px" }}>전시회 열기</div>
-              <FormSubmitBtn>
-                {isUpload ? <>등록하기</> : <>수정하기</>}
-              </FormSubmitBtn>
+              <div style={{ display: "flex" }}>
+                {!isUpload && (
+                  <FormSubmitBtn
+                    isDelete={true}
+                    onClick={handleSubmit(onDeleteClick)}
+                  >
+                    삭제하기
+                  </FormSubmitBtn>
+                )}
+                <FormSubmitBtn>
+                  {isUpload ? <>등록하기</> : <>수정하기</>}
+                </FormSubmitBtn>
+              </div>
             </div>
             <S.UploadFormInputs style={{ marginBottom: "50px" }}>
               <S.UploadInfoInputContainer>
@@ -213,8 +234,10 @@ const FormSubmitBtn = styled.button`
   align-items: center;
   padding: 0px 10px;
   height: 40px;
+  border: none;
   border-radius: 7px;
   margin-top: 20px;
+  margin-left: 10px;
   background-color: ${(props) => props.theme.colors.point};
   color: white;
   font-family: "Noto Sans KR", sans-serif;
@@ -222,6 +245,11 @@ const FormSubmitBtn = styled.button`
   &:hover {
     cursor: pointer;
   }
+  ${(props) =>
+    props.isDelete &&
+    css`
+      background-color: ${(props) => props.theme.colors.error};
+    `}
 `;
 const MapContainer = styled.div`
   width: 400px;
