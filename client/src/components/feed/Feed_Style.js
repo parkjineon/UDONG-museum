@@ -18,6 +18,8 @@ export const PhotoContainer = styled.div`
   background-color: beige;
   flex-shrink: 0;
   margin-bottom: 20px;
+  /* overflow: hidden; */
+
   &:hover {
     cursor: pointer;
   }
@@ -47,6 +49,8 @@ export const PhotoCover = styled.div`
       color: white;
     `}
 `;
-export const PhotoImg = styled.div`
-  color: gray;
+export const PhotoImg = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 `;

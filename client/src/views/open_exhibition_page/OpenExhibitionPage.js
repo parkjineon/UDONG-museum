@@ -35,6 +35,7 @@ function OpenExhibitionPage({ isUpload }) {
     ["get_exhibition", eid],
     () => GET_EXHIBITION(eid),
     {
+      enabled: !isUpload,
       onSuccess: (data) => {
         reset({
           // set default form value
