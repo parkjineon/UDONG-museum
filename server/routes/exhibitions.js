@@ -4,6 +4,7 @@ const { Exhibition } = require('../models/Exhibition');
 const { auth } = require('../middleware/auth');
 const url = require('url');
 
+
 //전시회 등록
 router.post('/register', auth, (req,res)=>{
     const exhibition = new Exhibition(req.body)
@@ -32,10 +33,10 @@ router.get('/:userId/listUp',(req,res)=>{
             exhibitions: exhibitions
         })
     });
-
 })
 
-//유저 전시회 리스트업
+
+//유저 근처 전시회 리스트업
 router.get('/near',(req,res)=>{
     
     const queryData = url.parse(req.url, true).query;
