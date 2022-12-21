@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Exhibition } = require('../models/Exhibition');
+const { Photo } = require('../models/Photo');
 const { auth } = require('../middleware/auth');
 const url = require('url');
 
@@ -9,6 +10,12 @@ const url = require('url');
 router.post('/register', auth, (req,res)=>{
     const exhibition = new Exhibition(req.body)
     exhibition.user = req.user.id
+    
+    Photo.updateMany({ _id : {$in: req.body.photos}},{used: true})
+    .catch(err => {
+        console.log('photo 사용중 전환 오류');
+        return err;
+    });
 
     exhibition.save((err,exhibition)=>{
         if(err)
@@ -95,14 +102,21 @@ router.post('/:exhibitionId/edit',(req,res)=>{
 })
 
 //전시회 상세 정보 삭제
-router.get('/:exhibitionId/delete',(req,res)=>{
-    Exhibition.deleteOne({ _id : req.params.exhibitionId},(err)=>{
-        if(err){
-            return res.status(400).send(err);
-        }
+router.post('/:exhibitionId/delete',(req,res)=>{
+    Exhibition.findOneAndDelete({ _id : req.params.exhibitionId})
+    .then( (exhibition) => {
+        Photo.updateMany({ _id : {$in: exhibition.photos}},{used: false})
+        .catch(err => {
+            console.log('photo 사용중 전환 오류');
+            return err;
+        });
+
         return res.status(200).json({
             deleteExhibitionSuccess:true
         })
+    })
+    .catch( err => {
+        return err;
     })
 })
 

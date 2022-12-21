@@ -61,7 +61,7 @@ router.post('/:photoId/edit',(req,res)=>{
 })
 
 //사진 상세 정보 삭제
-router.get('/:photoId/delete',(req,res)=>{
+router.post('/:photoId/delete',(req,res)=>{
     Photo.deleteOne({ _id : req.params.photoId},(err)=>{
         if(err){
             return res.status(400).send(err);
