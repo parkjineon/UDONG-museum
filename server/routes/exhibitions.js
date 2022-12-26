@@ -11,7 +11,7 @@ router.post('/register', auth, (req,res)=>{
     const exhibition = new Exhibition(req.body)
     exhibition.user = req.user.id
     
-    Photo.updateMany({ _id : {$in: req.body.photos}},{used: true})
+    Photo.updateMany({ _id : {$in: req.body.photos}},{used: true, exhibition: exhibition._id})
     .catch(err => {
         console.log('photo 사용중 전환 오류');
         return err;
@@ -89,6 +89,19 @@ router.get('/:exhibitionId',(req,res)=>{
     })
 })
 
+//전시회에 등록된 사진 
+router.get('/:exhibitionId/photos',(req,res)=>{
+    Photo.find({exhibition: req.params.exhibitionId},(err, photos)=>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        return res.status(200).json({
+            getExhibitionPhotosSuccess: true, 
+            photos: photos
+        })
+    })
+})
+
 //전시회 상세 정보 변경
 router.post('/:exhibitionId/edit',(req,res)=>{
     Exhibition.findOneAndUpdate({ _id : req.params.exhibitionId},req.body,(err)=>{
@@ -105,7 +118,7 @@ router.post('/:exhibitionId/edit',(req,res)=>{
 router.post('/:exhibitionId/delete',(req,res)=>{
     Exhibition.findOneAndDelete({ _id : req.params.exhibitionId})
     .then( (exhibition) => {
-        Photo.updateMany({ _id : {$in: exhibition.photos}},{used: false})
+        Photo.updateMany({ _id : {$in: exhibition.photos}},{used: false, exhibition: ''})
         .catch(err => {
             console.log('photo 사용중 전환 오류');
             return err;

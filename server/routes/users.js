@@ -145,7 +145,6 @@ router.get('/mine/show',auth,(req,res)=>{
 
 //내 정보 수정하기
 router.post('/mine/edit',auth,(req,res)=>{
-    console.log(req.body);
     User.updateOne({ _id : req.user._id},req.body,(err)=>{
         if(err){
             return res.status(400).send(err);
@@ -154,6 +153,7 @@ router.post('/mine/edit',auth,(req,res)=>{
             editMyInfoSuccess:true
         })
     })
+
 })
 
 
