@@ -39,10 +39,12 @@ const userSchema = mongoose.Schema({
     token:{
         type: String
     },
+    
     tokenExp: {
         type: Number
     }
 })
+
 
 userSchema.pre('save', function(next) {
     var user = this;
@@ -64,6 +66,7 @@ userSchema.pre('save', function(next) {
         next()
     }
 })
+
 
 userSchema.methods.comparePassword = function(plainPassword, cb) {
     bcrypt.compare(plainPassword, this.password, function(err, isMatch){
