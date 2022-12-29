@@ -67,6 +67,19 @@ userSchema.pre('save', function(next) {
     }
 })
 
+userSchema.statics.saveNewPassword = function(newPassword, cb){
+    bcrypt.genSalt(saltRounds, function(err,salt){
+        if(err) {
+            return cb(err);
+        }
+        bcrypt.hash(newPassword, salt, function(err, hash){
+            if(err){
+                return cb(err);
+            }
+            return cb(null,hash);
+        })
+    })
+}
 
 userSchema.methods.comparePassword = function(plainPassword, cb) {
     bcrypt.compare(plainPassword, this.password, function(err, isMatch){
