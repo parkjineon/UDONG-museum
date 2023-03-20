@@ -10,8 +10,8 @@ Managing Pictures and Online Exhibition Site for Photographers and Painting Arti
 
   👩🏻‍🤝‍🧑🏻 Member: <br/>
   
-  <a href="https://github.com/menuin">김은민</a> : Front <br/>
-  <a href="https://github.com/parkjineon">박진언</a> : Bakend 
+  <a href="https://github.com/menuin">김은민</a> : Frontend <br/>
+  <a href="https://github.com/parkjineon">박진언</a> : Backend 
   
 </p>
 
