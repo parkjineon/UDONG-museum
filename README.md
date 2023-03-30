@@ -10,8 +10,8 @@ Managing Pictures and Online Exhibition Site for Photographers and Painting Arti
 
   👩🏻‍🤝‍🧑🏻 Member: <br/>
   
-  <a href="https://github.com/menuin">김은민</a> : Frontend <br/>
-  <a href="https://github.com/parkjineon">박진언</a> : Backend 
+  <a href="https://github.com/menuin">김은민</a> : Front <br/>
+  <a href="https://github.com/parkjineon">박진언</a> : Bakend 
   
 </p>
 
@@ -25,27 +25,18 @@ UDONG EDONG(우동이동)은 우리동네 이웃동네의 약칭이다. <br/><br
 주 사용자는 사진 작가나 그림 작가를 타깃으로 한다. 사용자가 찍은 사진이나 그린 그림을 개인 계정에 업로드 한 후 제목과 날짜, 설명 등의 정보와 함께 관리할 수 있다. 계정에 올라온 이미지 파일를 선택하고 위치와 기간, 제목 등의 정보를 작성한 뒤 온라인 전시회를 개최할 수 있다. 랜딩페이지에 있는 지도나 계정 팔로우를 통해 개최한 전시회에 접근할 수 있다.
 </p>
 
-<h2>💻 Development Environment</h2>
+<h2>💻 Tech </h2>
 
-````React````<br/>
+- Frontend : ````React````<br/>
+- State Management : ````Redux````<br/>
+- Backend : ````NodeJS````<br/>
+- Database : ````MongoDB````<br/>
+- Image Storage : ````AWS S3````<br/>
 
-````node.js````<br/>
-
-IDE: Visual Studio Code
+<h2>⚙ Installation </h2>
 
 DataBase: MongoDB
 
-<h2>⚙ Major Function</h2>
-<h3>Backend</h3>
+<h2> Screen Shots</h2>
+<h3>Main Page</h3>
 
-<h4>로그인</h4>
-
-<h4>팔로우</h4>
-
-Follow<br/>
-UnFollow<br/>
-
-<h4>CRUD</h4>
-User : Create, Read, Update<br/>
-Photo : Create, Read, Update, Delete<br/>
-Exhibition : Create, Read, Update, Delete<br/>
